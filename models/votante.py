@@ -1,4 +1,4 @@
-from models.Pessoa import Pessoa
+from models.pessoa import Pessoa
 
 
 class Votante(Pessoa):
