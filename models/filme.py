@@ -37,6 +37,9 @@ class Filme:
     def ano_lancamento(self, ano_lancamento):
         self.__ano_lancamento = ano_lancamento
 
+    def add_categoria_concorrendo(self, categoria):
+        self.__categorias_concorrendo.extend(categoria)
+
 
 
     def __str__(self):

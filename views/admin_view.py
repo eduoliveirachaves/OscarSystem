@@ -7,12 +7,14 @@ class AdminView:
     # ainda nao sei se a tela vai possivelmente precisar de alguma variavel da classe
     @staticmethod
     def mostrar_tela():
-        print("ADMIN")
-        print("1 - Cadastrar ator")
-        print("2 - Cadastrar filme")
+        print("\nADMIN\n")
+        print("1 - Cadastrar filme")
+        print("2 - Cadastrar ator")
         print("3 - Cadastrar diretor")
+        print("4 - Cadastrar categoria")
         print("0 - Voltar")
-        opcao = input("Digite a opção desejada: ")
+        opcao = input("\nDigite a opção desejada: ")
+        print("")
         return opcao
 
     # por ex aqui, eu posso fazer assim e retornar os dados obtidos, mas parece meio "desorganizado"

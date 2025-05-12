@@ -9,3 +9,6 @@ class Categoria:
 
     def add_voto(self, voto):
         pass
+
+    def __str__(self):
+        return self.__nome

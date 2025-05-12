@@ -16,6 +16,36 @@ class AdminController:
         self.__votantes = []
         self.carregar_dados()
 
+    @property
+    def filmes(self):
+        if len(self.__filmes) == 0:
+            return ["Nenhum filme cadastrado"]
+        return self.__filmes
+
+    @property
+    def categorias(self):
+        if len(self.__categorias) == 0:
+            return ["Nenhuma categoria cadastrada"]
+        return self.__categorias
+
+    @property
+    def atores(self):
+        if len(self.__atores) == 0:
+            return ["Nenhum ator cadastrado"]
+        return self.__atores
+
+    @property
+    def diretores(self):
+        if len(self.__diretores) == 0:
+            return ["Nenhum diretor cadastrado"]
+        return self.__diretores
+
+    @property
+    def votantes(self):
+        if len(self.__votantes) == 0:
+            return ["Nenhum votante cadastrado"]
+        return self.__votantes
+
     def iniciar(self):
         opcao = self.__admin_view.mostrar_tela()
         while opcao != "0":
@@ -43,13 +73,16 @@ class AdminController:
         nome, ano_lancamento, diretor, categorias_concorrendo = self.__admin_view.cadastrar_filme()
         categorias_concorrendo = categorias_concorrendo.split(",")
         filme = Filme(nome, ano_lancamento, diretor)
-        filme.
+        filme.add_categoria_concorrendo(categorias_concorrendo)
         self.__filmes.append(filme)
 
     def cadastrar_diretor(self):
         pass
 
     def cadastrar_categoria(self):
+        self.__categorias.append(self.__admin_view.cadastrar_categoria())
+
+    def add_indicado_na_categoria(self):
         pass
 
     def carregar_dados(self):
@@ -81,3 +114,4 @@ class AdminController:
 
         for categoria in categorias_basicas:
             self.__categorias.append(Categoria(categoria))
+
