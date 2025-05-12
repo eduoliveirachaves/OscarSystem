@@ -1,24 +1,83 @@
+from models.categoria import Categoria
+from models.filme import Filme
+from views.admin_view import AdminView
+from models.ator import Pessoa, Ator
+
+
 class AdminController:
 
     def __init__(self):
-        pass
+        self.__admin_view = AdminView()
+        # usar runtime memory por agora
+        self.__atores = []
+        self.__filmes = []
+        self.__diretores = []
+        self.__categorias = []
+        self.__votantes = []
+        self.carregar_dados()
 
     def iniciar(self):
-        print("ADMIN")
-        print("1 - Cadastrar ator")
-        print("2 - Cadastrar filme")
-        print("3 - Cadastrar diretor")
-        print("0 - Voltar")
-        opcao = input("Digite a opção desejada: ")
-        if opcao == "1":
-            self.cadastrar_ator()
-        elif opcao == "2":
+        opcao = self.__admin_view.mostrar_tela()
+        while opcao != "0":
+            if opcao == "1":
+                self.cadastrar_filme()
+            elif opcao == "2":
+                self.cadastrar_ator()
+            elif opcao == "3":
+                self.cadastrar_diretor()
+            elif opcao == "4":
+                self.cadastrar_categoria()
+            else:
+                print("Opção inválida")
+            opcao = self.__admin_view.mostrar_tela()
+        return
 
     def cadastrar_ator(self):
-        pass
+        # metodo igual == self.__atores.append(self.__admin_view.castrar_ator())
+        # mas achei mais legivel como esta
+        nome, nacionalidade, data_nascimento = self.__admin_view.cadastrar_ator()
+        ator = Ator(nome, nacionalidade, data_nascimento)
+        self.__atores.append(ator)
 
     def cadastrar_filme(self):
-        pass
+        nome, ano_lancamento, diretor, categorias_concorrendo = self.__admin_view.cadastrar_filme()
+        categorias_concorrendo = categorias_concorrendo.split(",")
+        filme = Filme(nome, ano_lancamento, diretor)
+        filme.
+        self.__filmes.append(filme)
 
     def cadastrar_diretor(self):
         pass
+
+    def cadastrar_categoria(self):
+        pass
+
+    def carregar_dados(self):
+        categorias_basicas = [
+            "Ator Coadjuvante",
+            "Animação",
+            "Curta de animação",
+            "Figurino",
+            "Roteiro Original",
+            "Roteiro Adaptado",
+            "Maquiagem e cabelo",
+            "Edição",
+            "Atriz Coadjuvante",
+            "Direção de Arte",
+            "Canção Original",
+            "Curta documentário",
+            "Documentário",
+            "Som",
+            "Efeitos Visuais",
+            "Curta Live Action",
+            "Fotografia",
+            "Filme Internacional",
+            "Trilha Original.",
+            "Ator",
+            "Direção",
+            "Atriz",
+            "Filme"
+        ]
+
+        for categoria in categorias_basicas:
+            self.__categorias.append(Categoria(categoria))

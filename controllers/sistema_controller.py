@@ -21,7 +21,7 @@ class SistemaController:
                 print("Ainda não implementado")
             elif opcao == "3":
                 # area para admin ( nao precisa autenticar - se )
-                # cadastro de filmes / listagem / categorias / tudo
+                # CADASTRO / TODAS AS LISTAS
                 self.__admin_controller.iniciar()
             elif opcao == "0":
                 return
