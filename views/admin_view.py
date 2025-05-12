@@ -59,6 +59,10 @@ class AdminView:
                 f"Nome: {filme.nome} | Data de lançamento: {filme.data_lancamento} | Duração: {filme.duracao} | Categoria: {filme.categoria}"
             )
 
+    # SOBRE AS LISTAGENS admin view x user view
+    # serviria nao so pra visualizar pra tambem pra editar/remover
+    #
+
     def listar_categorias(self):
         pass
 
