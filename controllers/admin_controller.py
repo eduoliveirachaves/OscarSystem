@@ -13,7 +13,6 @@ class AdminController:
         self.__filmes = []
         self.__diretores = []
         self.__categorias = []
-        self.__votantes = []
         self.carregar_dados()
 
     @property
@@ -39,12 +38,6 @@ class AdminController:
         if len(self.__diretores) == 0:
             return ["Nenhum diretor cadastrado"]
         return self.__diretores
-
-    @property
-    def votantes(self):
-        if len(self.__votantes) == 0:
-            return ["Nenhum votante cadastrado"]
-        return self.__votantes
 
     def iniciar(self):
         opcao = self.__admin_view.mostrar_tela()

@@ -1,12 +1,14 @@
 from controllers.admin_controller import AdminController
+from controllers.membro_controller import MembroController
 from views.user_view import UserView
 
 
 class UserController:
-    def __init__(self, admin_controller: AdminController):
+    def __init__(self, admin_controller: AdminController, membro_controller: MembroController):
         ## get data
         self.__admin_controller = admin_controller
         self.__user_view = UserView()
+        self.__membro_controller = membro_controller
 
     # IDEIA: depois de exibir (so o nome) eu posso perguntar se deseja detalhes sobre alguma
     # como indicados naquela categoria ou detalhes sobre o ator etc...
@@ -24,7 +26,7 @@ class UserController:
             elif opcao == "4":
                 self.__user_view.visualizar_diretores(self.__admin_controller.diretores)
             elif opcao == "5":
-                self.__user_view.visualizar_membros(self.__admin_controller.votantes)
+                self.__user_view.visualizar_membros(self.__membro_controller.membros)
             else:
                 print("Opção inválida")
             opcao = self.__user_view.mostrar_tela()

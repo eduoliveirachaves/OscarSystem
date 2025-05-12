@@ -1,5 +1,6 @@
 from controllers.admin_controller import AdminController
 from controllers.user_controller import UserController
+from controllers.membro_controller import MembroController
 from views import sistema_view
 from views.sistema_view import SistemaView
 
@@ -12,6 +13,9 @@ class SistemaController:
         # usado pra exibir os dados publicos
         # preciso passar admin_controller pq os dados estao concentrados la
         self.__user_controller = UserController(self.__admin_controller)
+        # Sistema de votacao em si com a area do membro da academia onde ele pode cadastrar
+        # logar, navegar por categorias, ver detalhes etc
+        self.__voto_controller = MembroController(self.__admin_controller)
 
 
     def iniciar(self):
