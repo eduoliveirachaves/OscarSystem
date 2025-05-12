@@ -1,7 +1,7 @@
 from models.pessoa import Pessoa
 
 
-class Votante(Pessoa):
+class Membro(Pessoa):
 
     def __init__(self, ID, nome, data_nascimento, nacionalidade):
         super().__init__(nome)
@@ -9,6 +9,7 @@ class Votante(Pessoa):
         self.__nome = nome
         self.__data_nascimento = data_nascimento
         self.__nacionalidade = nacionalidade
+        self.__votos = []
 
     @property
     def id(self):
@@ -37,3 +38,9 @@ class Votante(Pessoa):
     @nacionalidade.setter
     def nacionalidade(self, nacionalidade):
         self.__nacionalidade = nacionalidade
+
+    def add_voto(self, voto):
+        self.__votos.append(voto)
+
+    def __str__(self):
+        return f"{self.nome} - {self.data_nascimento} - {self.nacionalidade}"

@@ -105,6 +105,8 @@ class AdminController:
             "Filme"
         ]
 
+        i = 1
         for categoria in categorias_basicas:
-            self.__categorias.append(Categoria(categoria))
+            self.__categorias.append(Categoria(i, categoria))
+            i += 1
 

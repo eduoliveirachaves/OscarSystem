@@ -1,8 +1,29 @@
 class Categoria:
-    def __init__(self, nome):
+    def __init__(self, id_counter, nome):
+        self.__id_counter = id_counter
         self.__nome = nome
         self.__indicados = []
         self.__votos = []
+
+    @property
+    def id_counter(self):
+        return self.__id_counter
+
+    @property
+    def nome(self):
+        return self.__nome
+
+    @property
+    def indicados(self):
+        return self.__indicados
+
+    @property
+    def votos(self):
+        return self.__votos
+
+    @nome.setter
+    def nome(self, nome):
+        self.__nome = nome
 
     def add_indicado(self, indicado):
         pass
@@ -11,4 +32,4 @@ class Categoria:
         pass
 
     def __str__(self):
-        return self.__nome
+        return f"{self.__id_counter} - {self.__nome}"
