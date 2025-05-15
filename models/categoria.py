@@ -1,5 +1,6 @@
 class Categoria:
-    def __init__(self, id_counter, nome):
+    # tipo se refere a que tipo de indicados a lista tera! como para filmes ou para atores ou para pessoas que .....
+    def __init__(self, id_counter, nome, tipo_indicados):
         self.__id_counter = id_counter
         self.__nome = nome
         self.__indicados = []

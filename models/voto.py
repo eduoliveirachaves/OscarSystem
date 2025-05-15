@@ -1,5 +1,8 @@
+from models.categoria import Categoria
+
+
 class Voto:
-    def __init__(self, id_membro, categoria, escolhido):
+    def __init__(self, id_membro: int, categoria: Categoria, escolhido):
         self.__id_membro = id_membro
         self.__categoria = categoria #!
         # DUVIDA: (categoria aqui) pode ser considerado duplicado ja que a propria categoria

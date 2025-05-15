@@ -1,12 +1,15 @@
+from typing import List
+from models.voto import Voto
 from views.membro_view import MembroView
 from models.membro import Membro
 
 
 class MembroController:
+
     def __init__(self, admin_controller):
-        self.__votante_view = MembroView()
+        self.__membro_view = MembroView()
         self.__admin_controller = admin_controller
-        self.__membros = []
+        self.__membros: List[Membro] = []
 
     @property
     def membros(self):
@@ -16,35 +19,48 @@ class MembroController:
 
     # refatorar - separar as etapas em novas funcoes
     def iniciar(self):
-        opcao = self.__votante_view.mostrar_tela()
+        opcao = self.__membro_view.mostrar_tela()
 
         while opcao != "0":
             if opcao == "1":
-                # exibir os membros cadastrados? e pedir somente a data?
-                nome, senha = self.__votante_view.tela_login()
+                autenticado, membro = self.login()
+                if autenticado:
+                    opcao = self.__membro_view.tela_membro(membro)
+                    while opcao != "0":
+                        if opcao == "1":
+                            categoria = self.__admin_controller.categorias
+                            escolhido, categoria = self.__membro_view.tela_voto(membro, categoria)
+                            if escolhido == "0":
+                                continue
 
-                if nome in self.__admin_controller.votantes:
-                    if senha == self.__admin_controller.votantes[nome].data_nascimento:
-                        print("\nLogin efetuado com sucesso\n")
-                        opcao = self.__votante_view.tela_membro(self.__admin_controller.votantes[nome])
+                            self.__membros[membro].add_voto(Voto(membro.id, categoria, escolhido))
+                        if opcao == "2":
+                            print(self.__membros[membro].votos)
 
-                        while opcao != "0":
-                            if opcao == "1":
-                                caself.__votante_view.tela_votar(self.__admin_controller.votantes[nome],
-                                                               self.__admin_controller.categorias)
-                            elif opcao == "2":
-                                self.__votante_view.tela_votos_realizados(self.__admin_controller.votantes[nome])
-                            else:
-                                print("Opção inválida")
-                            opcao = self.__votante_view.tela_membro(self.__admin_controller.votantes[nome])
+                        opcao = self.__membro_view.mostrar_tela()
 
-                    else:
-                        print("Credencial incorreta")
+
             elif opcao == "2":
-                nome, data_nascimento, nacionalidade = self.__votante_view.tela_cadastro()
-                ID = len(self.__admin_controller.votantes) + 1  # usar len temporiariamente so pra fins de teste
-                self.__admin_controller.votantes.append(Membro(ID, nome, data_nascimento, nacionalidade))
+                nome, data_nascimento, nacionalidade = self.__membro_view.tela_cadastro()
+                ID = len(self.__membros) + 1  # usar len temporiariamente so pra fins de teste
+                self.__membros.append(Membro(ID, nome, data_nascimento, nacionalidade))
+
             else:
                 print("Opção inválida")
 
-            opcao = self.__votante_view.mostrar_tela()
+            opcao = self.__membro_view.mostrar_tela()
+
+    def login(self):
+        nome, senha = self.__membro_view.tela_login()
+
+        while nome != "voltar tela":
+            print(nome)
+            for membro in self.__membros:
+                if membro.nome == nome and membro.data_nascimento == senha:
+                    return True, membro
+            else:
+                print("Login inválido. Tente novamente.")
+
+            # exibir os membros cadastrados? e pedir somente a data?
+            nome, senha = self.__membro_view.tela_login()
+        return False, None

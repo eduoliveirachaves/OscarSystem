@@ -1,4 +1,5 @@
 from models.pessoa import Pessoa
+from models.voto import Voto
 
 
 class Membro(Pessoa):
@@ -27,6 +28,10 @@ class Membro(Pessoa):
     def nacionalidade(self):
         return self.__nacionalidade
 
+    @property
+    def votos(self):
+        return self.__votos
+
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
@@ -39,7 +44,7 @@ class Membro(Pessoa):
     def nacionalidade(self, nacionalidade):
         self.__nacionalidade = nacionalidade
 
-    def add_voto(self, voto):
+    def add_voto(self, voto: Voto):
         self.__votos.append(voto)
 
     def __str__(self):

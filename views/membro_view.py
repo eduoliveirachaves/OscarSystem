@@ -4,15 +4,21 @@ from models.membro import Membro
 
 class MembroView:
     def mostrar_tela(self):
-        print("Bem vindo ao sistema de votação do Oscar")
+        print("\nBem vindo ao sistema de votação do Oscar\n")
         print("1 - Entrar")
         print("2 - Cadastrar-se")
         print("0 - Sair")
         opcao = input("Digite a opção desejada: ")
+        print("")
         return opcao
 
     def tela_login(self):
-        print("Digite seu nome e senha conforme pedido (Senha é a data de nascimento): ")
+        print("Login\n")
+
+        if input("Deseja continuar ? (s/n): ") == "n":
+            return "voltar tela", "0"
+
+        print("Digite conforme pedido (Senha é a data de nascimento): ")
         nome = input("Nome: ")
         senha = input("Senha: ")
         return nome, senha
@@ -40,16 +46,17 @@ class MembroView:
             print(categoria)
 
         categoria = input("Digite a categoria que deseja votar (numero): ")
-        return categoria
+        return categorias[int(categoria) - 1]
+
 
     def tela_realizar_escolha(self, categoria: Categoria):
         print(f"Você escolheu a categoria {categoria.nome}")
         for indicado in categoria.indicados:
             print(indicado)
 
-        opcao = input("Deseja votar em algum indicado? (s/n): ")
+        opcao = input("Deseja votar em algum indicado? (0 para voltar): ")
         return opcao
 
-    def tela_votar(self, membro: Membro, categorias: list):
+    def tela_voto(self, membro: Membro, categorias: list):
         categoria = self.tela_escolher_categoria(categorias)
-
+        return self.tela_realizar_escolha(categoria), categoria

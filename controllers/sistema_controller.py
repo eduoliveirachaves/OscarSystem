@@ -11,11 +11,11 @@ class SistemaController:
         # usado pra cadastrar e armazenar os dados
         self.__admin_controller = AdminController()
         # usado pra exibir os dados publicos
-        # preciso passar admin_controller pq os dados estao concentrados la
-        self.__user_controller = UserController(self.__admin_controller)
         # Sistema de votacao em si com a area do membro da academia onde ele pode cadastrar
         # logar, navegar por categorias, ver detalhes etc
-        self.__voto_controller = MembroController(self.__admin_controller)
+        # preciso passar admin_controller pq os dados estao concentrados la (tirando membro controller que possui os dados da votacao)
+        self.__membro_controller = MembroController(self.__admin_controller)
+        self.__user_controller = UserController(self.__admin_controller, self.__membro_controller)
 
 
     def iniciar(self):
@@ -27,7 +27,8 @@ class SistemaController:
                self.__user_controller.iniciar()
             elif opcao == "2":
                 # area para membros da academia cadastrar - se / entrar / votar / .....
-                print("Ainda não implementado")
+                self.__membro_controller.iniciar()
+
             elif opcao == "3":
                 # area para admin ( nao precisa autenticar - se )
                 # DUVIDA: se eu quiser criar uma autenticacao eu posso?
