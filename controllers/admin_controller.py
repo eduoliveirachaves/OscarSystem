@@ -1,92 +1,35 @@
 from typing import List
 
+from controllers.categoria_controller import CategoriaController
+from controllers.profissional_controller import ProfissionalController
+from controllers.filme_controller import FilmeController
 from models.categoria import Categoria
-from models.filme import Filme
 from views.admin_view import AdminView
-from models.ator import Pessoa, Ator
+from models.ator import Ator
 
 
 class AdminController:
 
     def __init__(self):
+        atores, categorias = self.carregar_dados()
+        self.__profissional_controller = ProfissionalController(atores, [])
+        self.__filme_controller = FilmeController([])
+        self.__categoria_controller = CategoriaController(categorias)
         self.__admin_view = AdminView()
-        # usar runtime memory por agora
-        self.__atores = []
-        self.__filmes = []
-        self.__diretores = []
-        self.__categorias: List[Categoria] = []
-        self.carregar_dados()
-
-    @property
-    def filmes(self):
-        if len(self.__filmes) == 0:
-            return ["Nenhum filme cadastrado"]
-        return self.__filmes
-
-    @property
-    def categorias(self):
-        if len(self.__categorias) == 0:
-            return ["Nenhuma categoria cadastrada"]
-        return self.__categorias
-
-    @property
-    def atores(self):
-        if len(self.__atores) == 0:
-            return ["Nenhum ator cadastrado"]
-        return self.__atores
-
-    @property
-    def diretores(self):
-        if len(self.__diretores) == 0:
-            return ["Nenhum diretor cadastrado"]
-        return self.__diretores
 
     def iniciar(self):
         opcao = self.__admin_view.mostrar_tela()
         while opcao != "0":
             if opcao == "1":
-                self.cadastrar_filme()
+                self.__filme_controller.iniciar()
             elif opcao == "2":
-                self.cadastrar_ator()
+                self.__profissional_controller.iniciar()
             elif opcao == "3":
-                self.cadastrar_diretor()
-            elif opcao == "4":
-                self.cadastrar_categoria()
+                self.__categoria_controller.iniciar()
             else:
                 print("Opção inválida")
             opcao = self.__admin_view.mostrar_tela()
         return
-
-    def cadastrar_ator(self):
-        # metodo igual == self.__atores.append(self.__admin_view.castrar_ator())
-        # mas achei mais legivel como esta
-        nome, nacionalidade, data_nascimento = self.__admin_view.cadastrar_ator()
-        ator = Ator(nome, nacionalidade, data_nascimento)
-        self.__atores.append(ator)
-
-    def cadastrar_filme(self):
-        nome, ano_lancamento, diretor, categorias_concorrendo = self.__admin_view.cadastrar_filme(self.__categorias)
-        categorias_concorrendo = [int(x) for x in categorias_concorrendo.split(",")]
-        filme = Filme(nome, ano_lancamento, diretor)
-
-        for categoria in range(len(categorias_concorrendo)):
-            if categorias_concorrendo[categoria] > len(self.__categorias) or categorias_concorrendo[categoria] < 1:
-                print("Categoria não cadastrada")
-            filme.add_categoria_concorrendo(self.__categorias[categoria - 1])
-            self.__categorias[categoria - 1].add_indicado(filme)
-
-
-
-        self.__filmes.append(filme)
-
-    def cadastrar_diretor(self):
-        pass
-
-    def cadastrar_categoria(self):
-        self.__categorias.append(self.__admin_view.cadastrar_categoria())
-
-    def add_indicado_na_categoria(self):
-        pass
 
     def carregar_dados(self):
         categorias_basicas = [
@@ -115,9 +58,24 @@ class AdminController:
             "Filme, Filme"
         ]
 
-        i = 1
-        for categoria in categorias_basicas:
-            categoria, tipo = categoria.split(", ")
-            self.__categorias.append(Categoria(i, categoria, tipo))
-            i += 1
+        categorias = []
 
+        for categoria in categorias_basicas:
+            #implementar tipo ( DIRECAO, FILME, ATOR/ATRIZ, TRILHA SONORA ....
+            categoria, tipo = categoria.split(", ")
+            categorias.append(Categoria(categoria))
+
+        # Lista de indicados a Melhor Ator (2024)
+        indicados_ator = [
+            "Cillian Murphy",
+            "Bradley Cooper",
+            "Colman Domingo",
+            "Paul Giamatti",
+            "Jeffrey Wright"
+        ]
+        atores = []
+        for nome in indicados_ator:
+            ator = Ator(nome, "Ingles", "2024")
+            atores.append(ator)
+
+        return atores, categorias

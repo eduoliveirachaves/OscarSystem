@@ -1,8 +1,8 @@
-from models.pessoa import Pessoa
+from models.profissional import Profissional
 from models.voto import Voto
 
 
-class Membro(Pessoa):
+class Membro(Profissional):
 
     def __init__(self, ID, nome, data_nascimento, nacionalidade):
         super().__init__(nome)

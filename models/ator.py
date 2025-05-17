@@ -1,21 +1,20 @@
-from models.pessoa import Pessoa
+from models.profissional import Profissional
 
 
-class Ator(Pessoa):
-    def __init__(self, ID, nome, nacionalidade, data_nascimento: str):
-        super().__init__(nome)
-        self.__id = ID
-        self.__data_nascimento = data_nascimento
+class Ator(Profissional):
+
+    def __init__(self, nome, nacionalidade, data_nascimento: str):
+        super().__init__(nome, data_nascimento)
         self.__nacionalidade = nacionalidade
 
 
     @property
     def id(self):
-        return self.__id
+        return self._id
 
     @property
     def data_nascimento(self):
-        return self.__data_nascimento
+        return self._data_nascimento
 
     @property
     def nacionalidade(self):
@@ -23,11 +22,11 @@ class Ator(Pessoa):
 
     @property
     def nome(self):
-        return super().nome
+        return self._nome
 
     @data_nascimento.setter
     def data_nascimento(self, data_nascimento):
-        self.__data_nascimento = data_nascimento
+        self._data_nascimento = data_nascimento
 
     @nacionalidade.setter
     def nacionalidade(self, nacionalidade):
@@ -35,10 +34,10 @@ class Ator(Pessoa):
 
     @nome.setter
     def nome(self, nome):
-        super().nome = nome
+        self._nome = nome
 
     def __str__(self):
-        return f"{self.nome} - {self.data_nascimento} - {self.nacionalidade}"
+        return f"{self._id} - {self._nome} - {self._data_nascimento} - {self.__nacionalidade}"
 
 
 

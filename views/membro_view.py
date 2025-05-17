@@ -51,12 +51,18 @@ class MembroView:
 
     def tela_realizar_escolha(self, categoria: Categoria):
         print(f"Você escolheu a categoria {categoria.nome}")
+
+        if len(categoria.indicados) == 0:
+            print("Nenhum indicado para votar")
+            return "0", "0"
+
+        print("Indicados para votar:")
         for indicado in categoria.indicados:
             print(indicado)
 
         opcao = input("Deseja votar em algum indicado? (0 para voltar): ")
         return opcao
 
-    def tela_voto(self, membro: Membro, categorias: list):
+    def tela_voto(self, categorias: list):
         categoria = self.tela_escolher_categoria(categorias)
         return self.tela_realizar_escolha(categoria), categoria

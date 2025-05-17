@@ -8,10 +8,9 @@ class AdminView:
     @staticmethod
     def mostrar_tela():
         print("\nADMIN\n")
-        print("1 - Cadastrar filme")
-        print("2 - Cadastrar ator")
-        print("3 - Cadastrar diretor")
-        print("4 - Cadastrar categoria")
+        print("1 - Filmes")
+        print("2 - Atores")
+        print("3 - Categorias")
         print("0 - Voltar")
         opcao = input("\nDigite a opção desejada: ")
         print("")
@@ -40,7 +39,6 @@ class AdminView:
         print("Todas as categorias: ")
         print([str(categoria) for categoria in categorias])
         categoria = input("Categoria (mais de uma separar por virgula ex: 1, 2): ")
-
 
         return nome, ano_lancamento, diretor, categoria
 
@@ -84,10 +82,9 @@ class AdminView:
         for diretor in diretores:
             print(diretor)
 
-    def listar_votos(self, votos: list):
-        for voto in votos:
-            print(voto)
+    def listar_votos(self, categorias: list):
+        for categoria in categorias:
+            print([str(x) for x in categoria.votos])
 
     def listar_votos_por_categoria(self, votos: list):
         pass
-
