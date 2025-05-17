@@ -5,6 +5,7 @@ class Categoria:
         self.__nome = nome
         self.__indicados = []
         self.__votos = []
+        self.__tipo_indicados = tipo_indicados
 
     @property
     def id_counter(self):
@@ -27,10 +28,10 @@ class Categoria:
         self.__nome = nome
 
     def add_indicado(self, indicado):
-        pass
+        self.__indicados.append(indicado)
 
     def add_voto(self, voto):
         pass
 
     def __str__(self):
-        return f"{self.__id_counter} - {self.__nome}"
+        return f"{self.__id_counter} - {self.__nome} - {self.__tipo_indicados}"

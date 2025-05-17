@@ -10,6 +10,7 @@ class MembroController:
         self.__membro_view = MembroView()
         self.__admin_controller = admin_controller
         self.__membros: List[Membro] = []
+        self.carregar_dados()
 
     @property
     def membros(self):
@@ -64,3 +65,6 @@ class MembroController:
             # exibir os membros cadastrados? e pedir somente a data?
             nome, senha = self.__membro_view.tela_login()
         return False, None
+
+    def carregar_dados(self):
+        self.__membros.append(Membro(1, "teste", "teste", "Brasil"))

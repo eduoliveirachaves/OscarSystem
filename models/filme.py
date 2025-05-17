@@ -5,6 +5,7 @@ class Filme:
         self.__diretor = diretor
         self.__ano_lancamento = ano_lancamento
         self.__categorias_concorrendo = []
+        self.__elenco = []
 
     @property
     def titulo(self):
@@ -38,7 +39,7 @@ class Filme:
         self.__ano_lancamento = ano_lancamento
 
     def add_categoria_concorrendo(self, categoria):
-        self.__categorias_concorrendo.extend(categoria)
+        self.__categorias_concorrendo.append(categoria)
 
 
 

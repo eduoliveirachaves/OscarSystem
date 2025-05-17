@@ -1,3 +1,5 @@
+from typing import List
+
 from models.categoria import Categoria
 from models.filme import Filme
 from views.admin_view import AdminView
@@ -12,7 +14,7 @@ class AdminController:
         self.__atores = []
         self.__filmes = []
         self.__diretores = []
-        self.__categorias = []
+        self.__categorias: List[Categoria] = []
         self.carregar_dados()
 
     @property
@@ -63,10 +65,18 @@ class AdminController:
         self.__atores.append(ator)
 
     def cadastrar_filme(self):
-        nome, ano_lancamento, diretor, categorias_concorrendo = self.__admin_view.cadastrar_filme()
-        categorias_concorrendo = categorias_concorrendo.split(",")
+        nome, ano_lancamento, diretor, categorias_concorrendo = self.__admin_view.cadastrar_filme(self.__categorias)
+        categorias_concorrendo = [int(x) for x in categorias_concorrendo.split(",")]
         filme = Filme(nome, ano_lancamento, diretor)
-        filme.add_categoria_concorrendo(categorias_concorrendo)
+
+        for categoria in range(len(categorias_concorrendo)):
+            if categorias_concorrendo[categoria] > len(self.__categorias) or categorias_concorrendo[categoria] < 1:
+                print("Categoria não cadastrada")
+            filme.add_categoria_concorrendo(self.__categorias[categoria - 1])
+            self.__categorias[categoria - 1].add_indicado(filme)
+
+
+
         self.__filmes.append(filme)
 
     def cadastrar_diretor(self):
@@ -80,33 +90,34 @@ class AdminController:
 
     def carregar_dados(self):
         categorias_basicas = [
-            "Ator Coadjuvante",
-            "Animação",
-            "Curta de animação",
-            "Figurino",
-            "Roteiro Original",
-            "Roteiro Adaptado",
-            "Maquiagem e cabelo",
-            "Edição",
-            "Atriz Coadjuvante",
-            "Direção de Arte",
-            "Canção Original",
-            "Curta documentário",
-            "Documentário",
-            "Som",
-            "Efeitos Visuais",
-            "Curta Live Action",
-            "Fotografia",
-            "Filme Internacional",
-            "Trilha Original.",
-            "Ator",
-            "Direção",
-            "Atriz",
-            "Filme"
+            "Ator Coadjuvante, Ator",
+            "Animação, Filme",
+            "Curta de animação, Filme",
+            "Figurino, Filme",
+            "Roteiro Original, Filme",
+            "Roteiro Adaptado, Filme",
+            "Maquiagem e cabelo, Filme",
+            "Edição, Filme",
+            "Atriz Coadjuvante, Ator",
+            "Direção de Arte, Filme",
+            "Canção Original, Filme",
+            "Curta documentário, Filme",
+            "Documentário, Filme",
+            "Som, Filme",
+            "Efeitos Visuais, Filme",
+            "Curta Live Action, Filme",
+            "Fotografia, Filme",
+            "Filme Internacional, Filme",
+            "Trilha Original, Filme",
+            "Ator, Ator",
+            "Direção, Diretor",
+            "Atriz, Ator",
+            "Filme, Filme"
         ]
 
         i = 1
         for categoria in categorias_basicas:
-            self.__categorias.append(Categoria(i, categoria))
+            categoria, tipo = categoria.split(", ")
+            self.__categorias.append(Categoria(i, categoria, tipo))
             i += 1
 

@@ -30,13 +30,18 @@ class AdminView:
         nacionalidade = input("Nacionalidade: ")
         return nome, nacionalidade, data_nascimento
 
-    def cadastrar_filme(self):
+    def cadastrar_filme(self, categorias: list):
         print("Cadastrar filme")
         print("Digite os dados do filme")
         nome = input("Nome: ")
         ano_lancamento = input("Data de lançamento: ")
         diretor = input("Diretor: ")
-        categoria = input("Categoria (mais de uma separar por virgula ex: Filme, Ator Coadjuvante): ")
+
+        print("Todas as categorias: ")
+        print([str(categoria) for categoria in categorias])
+        categoria = input("Categoria (mais de uma separar por virgula ex: 1, 2): ")
+
+
         return nome, ano_lancamento, diretor, categoria
 
     def cadastrar_diretor(self):
@@ -63,21 +68,26 @@ class AdminView:
     # serviria nao so pra visualizar pra tambem pra editar/remover
     #
 
-    def listar_categorias(self):
-        pass
+    def listar_categorias(self, categorias):
+        for categoria in categorias:
+            print(categoria)
 
-    def listar_votantes(self):
-        pass
+    def listar_votantes(self, membros):
+        for membro in membros:
+            print(membro)
 
-    def listar_atores(self):
-        pass
+    def listar_atores(self, atores):
+        for ator in atores:
+            print(ator)
 
-    def listar_diretores(self):
-        pass
+    def listar_diretores(self, diretores):
+        for diretor in diretores:
+            print(diretor)
 
-    def listar_votos(self):
-        pass
+    def listar_votos(self, votos: list):
+        for voto in votos:
+            print(voto)
 
-    def listar_votos_por_categoria(self):
+    def listar_votos_por_categoria(self, votos: list):
         pass
 
