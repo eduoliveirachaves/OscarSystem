@@ -1,6 +1,7 @@
 from controllers.admin_controller import AdminController
 from controllers.user_controller import UserController
 from controllers.membro_controller import MembroController
+from controllers.votacao_controller import VotacaoController
 from views import sistema_view
 from views.sistema_view import SistemaView
 
@@ -14,8 +15,8 @@ class SistemaController:
         # Sistema de votacao em si com a area do membro da academia onde ele pode cadastrar
         # logar, navegar por categorias, ver detalhes etc
         # preciso passar admin_controller pq os dados estao concentrados la (tirando membro controller que possui os dados da votacao)
-        self.__membro_controller = MembroController(self.__admin_controller)
-        self.__user_controller = UserController(self.__admin_controller, self.__membro_controller)
+        self.__user_controller = UserController(self.__admin_controller)
+        self.__votacao_controller = VotacaoController()
 
 
     def iniciar(self):
@@ -26,14 +27,11 @@ class SistemaController:
                 # votos controller
                self.__user_controller.iniciar()
             elif opcao == "2":
-                # area para membros da academia cadastrar - se / entrar / votar / .....
-                self.__membro_controller.iniciar()
+                # area para membros da academia cadastros/editar/listar/ etc...
+                self.__admin_controller.iniciar()
 
             elif opcao == "3":
-                # area para admin ( nao precisa autenticar - se )
-                # DUVIDA: se eu quiser criar uma autenticacao eu posso?
-                # CADASTRO / TODAS AS LISTAS
-                self.__admin_controller.iniciar()
+                self.__votacao_controller.iniciar()
             elif opcao == "0":
                 return
             else:

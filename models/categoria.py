@@ -11,8 +11,8 @@ class Categoria:
         Categoria.__id_counter += 1
 
     @property
-    def id_counter(self):
-        return self.__id_counter
+    def id(self):
+        return self.__id
 
     @property
     def nome(self):
@@ -37,4 +37,4 @@ class Categoria:
         self.__votos.append(voto)
 
     def __str__(self):
-        return f"{self.__id_counter} - {self.__nome} - {self.__tipo_indicados}"
+        return f"{self.__id} - {self.__nome} - {self.__tipo_indicados}"

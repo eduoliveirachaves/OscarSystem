@@ -4,11 +4,11 @@ from views.user_view import UserView
 
 
 class UserController:
-    def __init__(self, admin_controller: AdminController, membro_controller: MembroController):
+    def __init__(self, admin_controller: AdminController):
         ## get data
         self.__admin_controller = admin_controller
         self.__user_view = UserView()
-        self.__membro_controller = membro_controller
+        self.__membro_controller = MembroController()
 
     # IDEIA: depois de exibir (so o nome) eu posso perguntar se deseja detalhes sobre alguma
     # como indicados naquela categoria ou detalhes sobre o ator etc...

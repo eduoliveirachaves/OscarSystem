@@ -1,5 +1,6 @@
 from typing import List
 
+from controllers.categoria_controller import CategoriaController
 from models.ator import Ator
 from models.diretor import Diretor
 from views.profissional_view import ProfissionalView
@@ -7,10 +8,25 @@ from views.profissional_view import ProfissionalView
 
 class ProfissionalController:
 
-    def __init__(self, atores: List[Ator], diretores: List[Diretor] = []):
+    def __init__(self, atores: List[Ator], diretores: List[Diretor], categoria_controller: CategoriaController):
         self.__atores: List[Ator] = atores
         self.__diretores: List[Diretor] = diretores
         self.__profissional_view = ProfissionalView()
+        self.__categoria_controller = categoria_controller
+
+    @property
+    def atores(self):
+        return self.__atores
+
+    @property
+    def diretores(self):
+        return self.__diretores
+
+
+
+
+
+
 
     def iniciar(self):
         opcao = self.__profissional_view.mostrar_tela()
@@ -55,3 +71,14 @@ class ProfissionalController:
 
     def editar(self):
         pass
+
+    def add_ator(self, nome, nacionalidade, data_nascimento):
+        self.__atores.append(Ator(nome, nacionalidade, data_nascimento))
+
+    def add_diretor(self, nome, data_nascimento):
+        diretor = Diretor(nome, data_nascimento)
+        self.__diretores.append(diretor)
+        return diretor
+
+
+

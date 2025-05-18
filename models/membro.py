@@ -3,26 +3,22 @@ from models.voto import Voto
 
 
 class Membro(Profissional):
-
-    def __init__(self, ID, nome, data_nascimento, nacionalidade):
-        super().__init__(nome)
-        self.__id = ID
-        self.__nome = nome
-        self.__data_nascimento = data_nascimento
+    def __init__(self, nome, data_nascimento, nacionalidade):
+        super().__init__(nome, data_nascimento)
         self.__nacionalidade = nacionalidade
         self.__votos = []
 
     @property
     def id(self):
-        return self.__id
+        return self._id
 
     @property
     def nome(self):
-        return self.__nome
+        return self._nome
 
     @property
     def data_nascimento(self):
-        return self.__data_nascimento
+        return self._data_nascimento
 
     @property
     def nacionalidade(self):
@@ -34,11 +30,11 @@ class Membro(Profissional):
 
     @nome.setter
     def nome(self, nome):
-        self.__nome = nome
+        self._nome = nome
 
     @data_nascimento.setter
     def data_nascimento(self, data_nascimento):
-        self.__data_nascimento = data_nascimento
+        self._data_nascimento = data_nascimento
 
     @nacionalidade.setter
     def nacionalidade(self, nacionalidade):
@@ -48,4 +44,4 @@ class Membro(Profissional):
         self.__votos.append(voto)
 
     def __str__(self):
-        return f"{self.nome} - {self.data_nascimento} - {self.nacionalidade}"
+        return f"{self._nome} - {self._data_nascimento} - {self.__nacionalidade}"

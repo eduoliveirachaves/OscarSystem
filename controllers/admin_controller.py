@@ -1,6 +1,7 @@
 from typing import List
 
 from controllers.categoria_controller import CategoriaController
+from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.filme_controller import FilmeController
 from models.categoria import Categoria
@@ -12,9 +13,10 @@ class AdminController:
 
     def __init__(self):
         atores, categorias = self.carregar_dados()
-        self.__profissional_controller = ProfissionalController(atores, [])
-        self.__filme_controller = FilmeController([])
         self.__categoria_controller = CategoriaController(categorias)
+        self.__profissional_controller = ProfissionalController(atores, [], self.__categoria_controller)
+        self.__filme_controller = FilmeController([], self.__profissional_controller, self.__categoria_controller)
+        self.__membro_controller = MembroController()
         self.__admin_view = AdminView()
 
     def iniciar(self):
@@ -26,11 +28,14 @@ class AdminController:
                 self.__profissional_controller.iniciar()
             elif opcao == "3":
                 self.__categoria_controller.iniciar()
+            elif opcao == "4":
+                self.__membro_controller.iniciar()
             else:
                 print("Opção inválida")
             opcao = self.__admin_view.mostrar_tela()
         return
 
+    # adiciona alguns dados ao iniciar o sistema para fins de teste e visualizacao
     def carregar_dados(self):
         categorias_basicas = [
             "Ator Coadjuvante, Ator",
@@ -61,7 +66,7 @@ class AdminController:
         categorias = []
 
         for categoria in categorias_basicas:
-            #implementar tipo ( DIRECAO, FILME, ATOR/ATRIZ, TRILHA SONORA ....
+            # implementar tipo ( DIRECAO, FILME, ATOR/ATRIZ, TRILHA SONORA ....
             categoria, tipo = categoria.split(", ")
             categorias.append(Categoria(categoria))
 

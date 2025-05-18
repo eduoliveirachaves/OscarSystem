@@ -9,11 +9,11 @@ class AdminView:
     def mostrar_tela():
         print("\nADMIN\n")
         print("1 - Filmes")
-        print("2 - Atores")
+        print("2 - Profissionais do Cinema")
         print("3 - Categorias")
+        print("4 - Membros")
         print("0 - Voltar")
         opcao = input("\nDigite a opção desejada: ")
-        print("")
         return opcao
 
     # por ex aqui, eu posso fazer assim e retornar os dados obtidos, mas parece meio "desorganizado"

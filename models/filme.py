@@ -1,6 +1,10 @@
+from models.categoria import Categoria
+from models.diretor import Diretor
+
+
 class Filme:
     # genero? custo? bilheteria? duracao? elenco?
-    def __init__(self, titulo: str, diretor: str, ano_lancamento: int):
+    def __init__(self, titulo: str, ano_lancamento: int, diretor: Diretor):
         self.__titulo = titulo
         self.__diretor = diretor
         self.__ano_lancamento = ano_lancamento
@@ -38,11 +42,11 @@ class Filme:
     def ano_lancamento(self, ano_lancamento):
         self.__ano_lancamento = ano_lancamento
 
-    def add_categoria_concorrendo(self, categoria):
+    def add_categoria_concorrendo(self, categoria: Categoria):
         self.__categorias_concorrendo.append(categoria)
 
 
 
     def __str__(self):
-        return f"{self.titulo} - {self.diretor} - {self.ano_lancamento}"
+        return f"{self.titulo} - {self.ano_lancamento} - By {self.diretor}"
 
