@@ -4,6 +4,7 @@ from controllers.categoria_controller import CategoriaController
 from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.filme_controller import FilmeController
+from controllers.votacao_controller import VotacaoController
 from models.categoria import Categoria
 from models.diretor import Diretor
 from models.filme import Filme
@@ -14,15 +15,16 @@ from models.ator import Ator
 class AdminController:
 
     def __init__(self, carregar_dados: bool = False):
-        filmes, categorias, atores, diretores, membros\
+        filmes, categorias, atores, diretores, membros, votos \
             = self.carregar_dados(carregar_dados)
         self.__categoria_controller = CategoriaController(categorias)
         self.__profissional_controller = ProfissionalController(atores, diretores, self.__categoria_controller)
         self.__filme_controller = FilmeController(filmes, self.__profissional_controller, self.__categoria_controller)
         self.__membro_controller = MembroController()
+        self.__votos_controller = VotacaoController(votos, self.__membro_controller , self.__categoria_controller,
+                                                   self.__filme_controller, self.__profissional_controller)
         self.__admin_view = AdminView()
-        self.carregar_nomeacoes(filmes, atores)
-
+        self.carregar_nomeacoes(carregar_dados, filmes, atores)
 
     def iniciar(self):
         opcao = self.__admin_view.mostrar_tela()
@@ -35,6 +37,8 @@ class AdminController:
                 self.__categoria_controller.iniciar()
             elif opcao == "4":
                 self.__membro_controller.iniciar()
+            elif opcao == "5":
+                self.__votos_controller.iniciar()
             else:
                 print("Opção inválida")
             opcao = self.__admin_view.mostrar_tela()
@@ -43,7 +47,7 @@ class AdminController:
     # adiciona alguns dados ao iniciar o sistema para fins de teste e visualizacao
     def carregar_dados(self, carregar_dados: bool = False):
         if not carregar_dados:
-            return [], [], [], [], []
+            return [], [], [], [], [], []
 
         categorias_basicas = [
             "Ator Coadjuvante, Ator",
@@ -93,7 +97,7 @@ class AdminController:
             "Teo Yoo, Past Lives, 1981, Sul-coreano",
             "Adam Driver, Ferrari, 1983, Americano"
         ]
-        
+
         atores = []
         for s in atores_iniciais:
             nome, filme, ano, nacionalidade = s.split(", ")
@@ -101,7 +105,7 @@ class AdminController:
             atores.append(ator)
 
         diretores = []
-        
+
         diretores_iniciais = [
             "Christopher Nolan, 1970",
             "Bradley Cooper, 1975",
@@ -115,13 +119,13 @@ class AdminController:
             "Michael Mann, 1943"
         ]
 
-        for diretor in diretores_iniciais:
-            nome, data_nascimento = diretor.split(", ")
-            diretor = Diretor(nome, data_nascimento)
-            diretores.append(diretor)
-        
+        for d in diretores_iniciais:
+            nome, data_nascimento = d.split(", ")
+            d = Diretor(nome, data_nascimento)
+            diretores.append(d)
+
         filmes = []
-        
+
         filmes_iniciais = [
             "Oppenheimer, 2023, Christopher Nolan, 23",
             "Maestro, 2023, Bradley Cooper, 23",
@@ -146,9 +150,11 @@ class AdminController:
 
         membros = []
 
-        return filmes, categorias, atores, diretores, membros
+        votos = []
 
-    def carregar_nomeacoes(self, filmes, atores, carregar_dados: bool = False):
+        return filmes, categorias, atores, diretores, membros, votos
+
+    def carregar_nomeacoes(self, carregar_dados: bool, filmes, atores):
         if not carregar_dados:
             return
         for ator in atores:

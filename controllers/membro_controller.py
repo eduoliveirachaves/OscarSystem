@@ -8,6 +8,10 @@ class MembroController:
         self.__view = MembroView()
         self.__membros = []
 
+    @property
+    def membros(self):
+        return self.__membros
+
 
     def iniciar(self):
         opcao = self.__view.mostrar_tela()
@@ -33,6 +37,8 @@ class MembroController:
         membro = Membro(nome, data, nacionalidade)
 
         self.__membros.append(membro)
+
+        return membro
 
     def editar(self):
         pass

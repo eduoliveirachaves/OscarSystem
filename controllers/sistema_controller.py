@@ -16,7 +16,6 @@ class SistemaController:
         # logar, navegar por categorias, ver detalhes etc
         # preciso passar admin_controller pq os dados estao concentrados la (tirando membro controller que possui os dados da votacao)
         self.__user_controller = UserController(self.__admin_controller)
-        self.__votacao_controller = VotacaoController([])
 
 
     def iniciar(self):
@@ -29,9 +28,6 @@ class SistemaController:
             elif opcao == "2":
                 # area para membros da academia cadastros/editar/listar/ etc...
                 self.__admin_controller.iniciar()
-
-            elif opcao == "3":
-                self.__votacao_controller.iniciar()
             elif opcao == "0":
                 return
             else:

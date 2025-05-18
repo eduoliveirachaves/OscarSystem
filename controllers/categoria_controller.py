@@ -60,7 +60,6 @@ class CategoriaController:
             categorias_raw = [int(c.strip()) for c in categorias_raw.split(",") if c.strip().isdigit()]
 
         for categoria_id in categorias_raw:
-
             categoria_obj = next(
                 (cat_existente for cat_existente in self.__categorias if cat_existente.id == categoria_id),
                 None
@@ -74,7 +73,10 @@ class CategoriaController:
 
         return True
 
-    def carregar_dados(self):
-        pass
+    def get_categoria_by_id(self, categoria_id: int):
+        return next((cat for cat in self.__categorias if cat.id == categoria_id), None)
+
+    def get_indicacao_by_id_and_categoria(self, nomeacao_id: int, categoria: Categoria):
+        return next((nomeacao for nomeacao in categoria.indicados if nomeacao.id == nomeacao_id), None)
 
 

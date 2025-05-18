@@ -2,11 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class Profissional(ABC):
-    __id_counter = 1
 
     def __init__(self, nome: str, data: str):
-        self._id = Profissional.__id_counter
-        Profissional.__id_counter += 1
         self._nome = nome
         self._data_nascimento = data
 

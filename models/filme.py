@@ -1,3 +1,5 @@
+from typing import List
+
 from models.categoria import Categoria
 from models.diretor import Diretor
 
@@ -8,7 +10,7 @@ class Filme:
         self.__titulo = titulo
         self.__diretor = diretor
         self.__ano_lancamento = ano_lancamento
-        self.__categorias_concorrendo = []
+        self.__categorias_concorrendo: List[Categoria] = []
         self.__elenco = []
 
     @property
