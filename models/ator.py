@@ -6,6 +6,7 @@ class Ator(Profissional):
     def __init__(self, nome, nacionalidade, data_nascimento: str):
         super().__init__(nome, data_nascimento)
         self.__nacionalidade = nacionalidade
+        self.__categoria_concorrendo = []
 
 
     @property
@@ -36,8 +37,11 @@ class Ator(Profissional):
     def nome(self, nome):
         self._nome = nome
 
+    def add_categoria_concorrendo(self, categoria):
+        self.__categoria_concorrendo.append(categoria)
+
     def __str__(self):
-        return f"{self._id} - {self._nome} - {self._data_nascimento} - {self.__nacionalidade}"
+        return f"[{self._id}] - {self._nome} - {self._data_nascimento} - {self.__nacionalidade}"
 
 
 

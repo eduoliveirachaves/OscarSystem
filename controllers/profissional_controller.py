@@ -22,12 +22,6 @@ class ProfissionalController:
     def diretores(self):
         return self.__diretores
 
-
-
-
-
-
-
     def iniciar(self):
         opcao = self.__profissional_view.mostrar_tela()
 
@@ -40,6 +34,8 @@ class ProfissionalController:
                 self.editar()
             else:
                 print("Opção inválida")
+
+            opcao = self.__profissional_view.mostrar_tela()
 
     def listagens(self):
         # todos / atores / diretores
@@ -57,15 +53,18 @@ class ProfissionalController:
             qual_profissional = self.__profissional_view.tela_visualizar()
 
     def cadastros(self):
-        opcao = self.__profissional_view.tela_cadastro()
-
-        while opcao != "0":
+        while True:
+            opcao = self.__profissional_view.tela_cadastro()
             if opcao == "1":
                 nome, nacionalidade, data_nascimento = self.__profissional_view.cadastrar_ator()
                 self.__atores.append(Ator(nome, nacionalidade, data_nascimento))
+                break
             elif opcao == "2":
                 nome, data_nascimento = self.__profissional_view.cadastrar_diretor()
                 self.__diretores.append(Diretor(nome, data_nascimento))
+                break
+            elif opcao == "0":
+                break
             else:
                 print("Opção inválida")
 
@@ -79,6 +78,3 @@ class ProfissionalController:
         diretor = Diretor(nome, data_nascimento)
         self.__diretores.append(diretor)
         return diretor
-
-
-

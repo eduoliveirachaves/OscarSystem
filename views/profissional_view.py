@@ -1,3 +1,8 @@
+from models.ator import Ator
+from models.diretor import Diretor
+from typing import List
+
+
 class ProfissionalView:
     def mostrar_tela(self):
         print("\nProfissionais do Cinema\n")
@@ -14,24 +19,36 @@ class ProfissionalView:
         print("2 - Visualizar atores")
         print("3 - Visualizar diretores")
         print("0 - Voltar")
+        return input("\nDigite a opção desejada: ")
 
     def visualizar_todos(self, atores, diretores):
         self.visualizar_atores(atores)
         self.visualizar_diretores(diretores)
 
-    def visualizar_atores(self, atores):
+    def visualizar_atores(self, atores: List[Ator]):
+        if not atores:
+            print("\nNenhum ator cadastrado.")
+            return
+
+        print("\nAtores")
         for ator in atores:
-            print(ator)
+            print(f"{ator.nome} - {ator.nacionalidade} - {ator.data_nascimento}")
 
     def visualizar_diretores(self, diretores):
+        if not diretores:
+            print("\nNenhum diretor cadastrado.")
+            return
+        
+        print("\nDiretores")
         for diretor in diretores:
-            print(diretor)
+            print(f"{diretor.nome} - {diretor.data_nascimento}")
 
     def tela_cadastro(self):
         print("\nCadastro de profissional\n")
         print("Que tipo de profissional é?")
         print("1 - Atores")
         print("2 - Diretores")
+        print("0 - Voltar")
         tipo = input("Ator ou Diretor: ")
         return tipo
 

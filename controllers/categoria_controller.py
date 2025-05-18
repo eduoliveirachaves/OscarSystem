@@ -54,7 +54,7 @@ class CategoriaController:
                 print("Opção inválida")
             opcao = self.__view.mostrar_tela()
 
-    def add_nomeacao(self, categorias_raw: list, nomeacao):
+    def add_nomeacao(self, categorias_raw: str, nomeacao):
         # converter string em lista de inteiros
         if isinstance(categorias_raw, str):
             categorias_raw = [int(c.strip()) for c in categorias_raw.split(",") if c.strip().isdigit()]
@@ -73,5 +73,8 @@ class CategoriaController:
             categoria_obj.add_indicado(nomeacao)
 
         return True
+
+    def carregar_dados(self):
+        pass
 
 

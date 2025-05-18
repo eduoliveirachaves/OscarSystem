@@ -61,7 +61,7 @@ class FilmeController:
                                                                      diretor_info["data"])
         else:
             diretor_obj = next(
-                (d for d in self.__profissional_controller.diretores() if d.id == diretor_info["id"]), None)
+                (d for d in self.__profissional_controller.diretores if str(d.id) == str(diretor_info["id"])), None)
             if not diretor_obj:
                 print(f"ERRO: Diretor '{diretor_info['nome']}' não encontrado. Cadastre o profissional primeiro.")
                 return

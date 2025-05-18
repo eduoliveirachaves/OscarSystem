@@ -14,6 +14,10 @@ class Diretor(Profissional):
     def data_nascimento(self):
         return self._data_nascimento
 
+    @property
+    def id(self):
+        return self._id
+
     @nome.setter
     def nome(self, nome):
         self._nome = nome
@@ -23,4 +27,4 @@ class Diretor(Profissional):
         self._data_nascimento = data_nascimento
 
     def __str__(self):
-        return f"{self._nome} - {self._data_nascimento}"
+        return f"[{self._id}] - {self._nome} - {self._data_nascimento}"

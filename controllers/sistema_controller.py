@@ -7,16 +7,16 @@ from views.sistema_view import SistemaView
 
 
 class SistemaController:
-    def __init__(self):
+    def __init__(self, carregar_dados: bool=False):
         self.__sistema_view = SistemaView()
         # usado pra cadastrar e armazenar os dados
-        self.__admin_controller = AdminController()
+        self.__admin_controller = AdminController(carregar_dados)
         # usado pra exibir os dados publicos
         # Sistema de votacao em si com a area do membro da academia onde ele pode cadastrar
         # logar, navegar por categorias, ver detalhes etc
         # preciso passar admin_controller pq os dados estao concentrados la (tirando membro controller que possui os dados da votacao)
         self.__user_controller = UserController(self.__admin_controller)
-        self.__votacao_controller = VotacaoController()
+        self.__votacao_controller = VotacaoController([])
 
 
     def iniciar(self):
@@ -36,6 +36,9 @@ class SistemaController:
                 return
             else:
                 print("Opção inválida")
+
+
+
 
 
 
