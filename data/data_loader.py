@@ -11,7 +11,7 @@ class DataLoader:
         elif ano == 2022:
             return DataLoader.carregar_dados_2022()
         else:
-            return {"sucess": False}
+            return {"success": False}
 
     @staticmethod
     def carregar_dados_2024():

@@ -1,38 +1,26 @@
 class UserView:
 
     def mostrar_tela(self):
-        print("\nLISTAGEM\n")
-        # DUVIDA
-        # print("1 - Visualizar Votos") // nao eh publico / eu deveria exibir aqui mesmo assim?
-        # estou pensando em algo minimamente real onde o publico simplesmente nao teria acesso
-        # mas tambem se for apenas pra cumprir os requisitors tudo pode ser exibido aqui
-        print("1 - Visualizar Filmes")
-        print("2 - Visualizar Categorias")
-        print("3 - Visualizar Atores")
-        print("4 - Visualizar Diretores")
-        print("5 - Visualizar Membros da Academia")
+        print("\n=== Oscar ===\n")
+
+        print("1 - Dados Gerais")
+        print("2 - Selecionar Edicao")
+
         print("0 - Voltar")
         opcao = input("\nDigite a opção desejada: ")
         print("")
         return opcao
 
-    def visualizar_filmes(self, filmes):
-        for filme in filmes:
-            print(filme)
+    def dados_gerais_tela(self):
+        print("IMPLMENTAR")
+        return
 
-    def visualizar_categorias(self, categorias):
-        for categoria in categorias:
-            print(categoria)
+    def selecionar_edicao_tela(self, edicoes):
+        print("\n=== Edições Disponiveis ===\n")
+        for edicao in edicoes:
+            print(f"Oscar - {edicao.ano}")
 
+        edicao = input("Digite o ano da edição: ")
 
-    def visualizar_atores(self, atores):
-        for ator in atores:
-            print(ator)
+        return edicao
 
-    def visualizar_diretores(self, diretores):
-        for diretor in diretores:
-            print(diretor)
-
-    def visualizar_membros(self, membros):
-        for membro in membros:
-            print(membro)
