@@ -1,33 +1,38 @@
-from typing import List
-
 from controllers.categoria_controller import CategoriaController
 from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.filme_controller import FilmeController
 from controllers.votacao_controller import VotacaoController
-from models.categoria import Categoria
-from models.diretor import Diretor
-from models.filme import Filme
+from data.data_loader import DataLoader
+from models.edicao import Edicao  # Criamos esta classe
 from views.admin_view import AdminView
 from models.ator import Ator
+from models.membro import Membro
 
 
 class AdminController:
+    def __init__(self, carregar_dados: bool, edicao: Edicao, membros_controller: MembroController):
+        # Centralize tudo numa edição
+        self.__edicao = edicao
+        self.__membro_controller = membros_controller
+        self.__view = AdminView()
 
-    def __init__(self, carregar_dados: bool = False):
-        filmes, categorias, atores, diretores, membros, votos \
-            = self.carregar_dados(carregar_dados)
-        self.__categoria_controller = CategoriaController(categorias)
-        self.__profissional_controller = ProfissionalController(atores, diretores, self.__categoria_controller)
-        self.__filme_controller = FilmeController(filmes, self.__profissional_controller, self.__categoria_controller)
-        self.__membro_controller = MembroController()
-        self.__votos_controller = VotacaoController(votos, self.__membro_controller , self.__categoria_controller,
-                                                   self.__filme_controller, self.__profissional_controller)
-        self.__admin_view = AdminView()
-        self.carregar_nomeacoes(carregar_dados, filmes, atores)
+        # Passa a edição para todos os controllers
+        self.__categoria_controller = CategoriaController(self.__edicao)
+        self.__profissional_controller = ProfissionalController(self.__edicao, self.__categoria_controller)
+        self.__filme_controller = FilmeController(self.__edicao, self.__profissional_controller,
+                                                  self.__categoria_controller)
+        self.__votos_controller = VotacaoController(
+            self.__edicao,
+            self.__membro_controller,
+            self.__categoria_controller,
+        )
+
+        if carregar_dados:
+            self.carregar_dados(edicao.ano)
 
     def iniciar(self):
-        opcao = self.__admin_view.mostrar_tela()
+        opcao = self.__view.mostrar_tela()
         while opcao != "0":
             if opcao == "1":
                 self.__filme_controller.iniciar()
@@ -41,124 +46,46 @@ class AdminController:
                 self.__votos_controller.iniciar()
             else:
                 print("Opção inválida")
-            opcao = self.__admin_view.mostrar_tela()
-        return
+            opcao = self.__view.mostrar_tela()
 
-    # adiciona alguns dados ao iniciar o sistema para fins de teste e visualizacao
-    def carregar_dados(self, carregar_dados: bool = False):
-        if not carregar_dados:
-            return [], [], [], [], [], []
+    def carregar_dados(self, ano: int):
 
-        categorias_basicas = [
-            "Ator Coadjuvante, Ator",
-            "Animação, Filme",
-            "Curta de animação, Filme",
-            "Figurino, Filme",
-            "Roteiro Original, Filme",
-            "Roteiro Adaptado, Filme",
-            "Maquiagem e cabelo, Filme",
-            "Edição, Filme",
-            "Atriz Coadjuvante, Ator",
-            "Direção de Arte, Filme",
-            "Canção Original, Filme",
-            "Curta documentário, Filme",
-            "Documentário, Filme",
-            "Som, Filme",
-            "Efeitos Visuais, Filme",
-            "Curta Live Action, Filme",
-            "Fotografia, Filme",
-            "Filme Internacional, Filme",
-            "Trilha Original, Filme",
-            "Ator, Ator",
-            "Direção, Diretor",
-            "Atriz, Ator",
-            "Filme, Filme"
-        ]
+        data = DataLoader.carregar_dados(ano)
+        sucess = data["success"]
 
-        categorias = []
+        if not sucess:
+            return
+
+        categorias_basicas = data["categorias"]
+        atores_iniciais = data["atores"]
+        diretores_iniciais = data["diretores"]
+        filmes_iniciais = data["filmes"]
+        membros_iniciais = data["membros"]
 
         for categoria in categorias_basicas:
-            # implementar tipo ( DIRECAO, FILME, ATOR/ATRIZ, TRILHA SONORA ....
-            categoria, tipo = categoria.split(", ")
-            categorias.append(Categoria(categoria))
+            nome, tipo = categoria.split(", ")
+            self.__categoria_controller.add_categoria(nome)
 
-        # Lista de indicados a Melhor Ator (2024) com nome, ano de nascimento e nacionalidade
+        for ator in atores_iniciais:
+            nome, filme, ano, nacionalidade = ator.split(", ")
+            self.__profissional_controller.add_ator(nome, nacionalidade, str(ano))
 
-        atores_iniciais = [
-            # nome, filme, ano_nascimento, nacionalidade
-            "Cillian Murphy, Oppenheimer, 1976, Irlandês",
-            "Bradley Cooper, Maestro, 1975, Americano",
-            "Colman Domingo, Rustin, 1969, Americano",
-            "Paul Giamatti, The Holdovers, 1967, Americano",
-            "Jeffrey Wright, American Fiction, 1965, Americano",
-            "Leonardo DiCaprio, Killers of the Flower Moon, 1974, Americano",
-            "Barry Keoghan, Saltburn, 1992, Irlandês",
-            "Andrew Scott, All of Us Strangers, 1976, Irlandês",
-            "Teo Yoo, Past Lives, 1981, Sul-coreano",
-            "Adam Driver, Ferrari, 1983, Americano"
-        ]
-
-        atores = []
-        for s in atores_iniciais:
-            nome, filme, ano, nacionalidade = s.split(", ")
-            ator = Ator(nome, nacionalidade, str(ano))
-            atores.append(ator)
-
-        diretores = []
-
-        diretores_iniciais = [
-            "Christopher Nolan, 1970",
-            "Bradley Cooper, 1975",
-            "George C. Wolfe, 1954",
-            "Alexander Payne, 1961",
-            "Cord Jefferson, 1981",
-            "Martin Scorsese, 1942",
-            "Emerald Fennell, 1985",
-            "Andrew Haigh, 1973",
-            "Celine Song, 1988",
-            "Michael Mann, 1943"
-        ]
-
-        for d in diretores_iniciais:
-            nome, data_nascimento = d.split(", ")
-            d = Diretor(nome, data_nascimento)
-            diretores.append(d)
-
-        filmes = []
-
-        filmes_iniciais = [
-            "Oppenheimer, 2023, Christopher Nolan, 23",
-            "Maestro, 2023, Bradley Cooper, 23",
-            "Rustin, 2023, George C. Wolfe, 23",
-            "The Holdovers, 2023, Alexander Payne, 23",
-            "American Fiction, 2023, Cord Jefferson, 23",
-            "Killers of the Flower Moon, 2023, Martin Scorsese, 23",
-            "Saltburn, 2023, Emerald Fennell, 23",
-            "All of Us Strangers, 2023, Andrew Haigh, 23",
-            "Past Lives, 2023, Celine Song, 23",
-            "Ferrari, 2023, Michael Mann, 23"
-        ]
+        for diretor in diretores_iniciais:
+            nome, nascimento = diretor.split(", ")
+            self.__profissional_controller.add_diretor(nome, str(nascimento))
 
         for filme in filmes_iniciais:
-            nome, ano, diretor, categoria = filme.split(", ")
-            for d in diretores:
-                if d.nome == diretor:
-                    diretor = d
-                    break
-            filme = Filme(nome, int(ano), diretor)
-            filmes.append(filme)
+            nome, ano, diretor_nome, categoria = filme.split(", ")
+            diretor = next((d for d in self.__profissional_controller.diretores() if d.nome == diretor_nome), None)
+            if diretor:
+                self.__filme_controller.add_filme(nome, int(ano), diretor)
 
-        membros = []
+        for nome in membros_iniciais:
+            self.__membro_controller.membros.append(Membro(nome, "data", "Brazil"))
 
-        votos = []
+        for profissional in self.__profissional_controller.profissionais:
+            if isinstance(profissional, Ator):
+                self.__categoria_controller.add_nomeacao("20", profissional)
 
-        return filmes, categorias, atores, diretores, membros, votos
-
-    def carregar_nomeacoes(self, carregar_dados: bool, filmes, atores):
-        if not carregar_dados:
-            return
-        for ator in atores:
-            self.__categoria_controller.add_nomeacao("20", ator)
-
-        for filme in filmes:
+        for filme in self.__filme_controller.filmes:
             self.__categoria_controller.add_nomeacao("23", filme)

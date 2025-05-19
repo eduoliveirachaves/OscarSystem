@@ -21,9 +21,9 @@ class ProfissionalView:
         print("0 - Voltar")
         return input("\nDigite a opção desejada: ")
 
-    def visualizar_todos(self, atores, diretores):
-        self.visualizar_atores(atores)
-        self.visualizar_diretores(diretores)
+    def visualizar_todos(self, profissionais):
+        for p in profissionais:
+            print(p)
 
     def visualizar_atores(self, atores: List[Ator]):
         if not atores:

@@ -4,9 +4,9 @@ from views.membro_view import MembroView
 
 class MembroController:
 
-    def __init__(self):
+    def __init__(self, membros: list[Membro]):
         self.__view = MembroView()
-        self.__membros = []
+        self.__membros = membros
 
     @property
     def membros(self):
@@ -34,14 +34,17 @@ class MembroController:
     def cadastrar(self):
         nome, data, nacionalidade = self.__view.tela_cadastro()
 
-        membro = Membro(nome, data, nacionalidade)
-
-        self.__membros.append(membro)
+        membro = self.add_membro(nome, data, nacionalidade)
 
         return membro
 
     def editar(self):
         pass
+
+    def add_membro(self, nome, data, nacionalidade):
+        membro = Membro(nome, data, nacionalidade)
+        self.__membros.append(membro)
+        return membro
 
 
 

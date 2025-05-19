@@ -2,11 +2,9 @@ from models.profissional import Profissional
 
 
 class Diretor(Profissional):
-    __id_counter = 1
-    def __init__(self, nome, data_nascimento):
+    def __init__(self, id_counter, nome, data_nascimento):
         super().__init__(nome, data_nascimento)
-        self.__id = Diretor.__id_counter
-        Diretor.__id_counter += 1
+        self.__id = id_counter
 
     @property
     def nome(self):

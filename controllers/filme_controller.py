@@ -2,22 +2,24 @@ from typing import List
 
 from controllers.categoria_controller import CategoriaController
 from controllers.profissional_controller import ProfissionalController
+from models.diretor import Diretor
+from models.edicao import Edicao
 from models.filme import Filme
 from views.filme_view import FilmeView
 
 
 class FilmeController:
 
-    def __init__(self, filmes: List[Filme], profissional_controller: ProfissionalController,
+    def __init__(self, edicao: Edicao, profissional_controller: ProfissionalController,
                  categoria_controller: CategoriaController):
-        self.__filmes: List[Filme] = filmes
+        self.__edicao = edicao
         self.__view = FilmeView()
         self.__profissional_controller = profissional_controller
         self.__categoria_controller = categoria_controller
 
     @property
     def filmes(self):
-        return self.__filmes
+        return self.__edicao.filmes
 
     def iniciar(self):
         opcao = self.__view.mostrar_tela()
@@ -35,11 +37,11 @@ class FilmeController:
             opcao = self.__view.mostrar_tela()
 
     def visualizar(self):
-        self.__view.visualizar_filmes(self.__filmes)
+        self.__view.visualizar_filmes(self.__edicao.filmes)
 
     def cadastrar_filme(self):
         categorias = self.__categoria_controller.categorias
-        diretores = self.__profissional_controller.diretores
+        diretores = self.__profissional_controller.diretores()
         input_data = self.__view.cadastrar_filme(diretores, categorias)
 
         if not input_data:
@@ -61,14 +63,13 @@ class FilmeController:
                                                                      diretor_info["data"])
         else:
             diretor_obj = next(
-                (d for d in self.__profissional_controller.diretores if str(d.id) == str(diretor_info["id"])), None)
+                (d for d in diretores if str(d.id) == str(diretor_info["id"])), None)
             if not diretor_obj:
                 print(f"ERRO: Diretor '{diretor_info['nome']}' não encontrado. Cadastre o profissional primeiro.")
                 return
 
-        filme = Filme(nome, ano, diretor_obj)
 
-        self.__filmes.append(filme)
+        filme = self.add_filme(nome, ano, diretor_obj)
 
         sucesso = self.__categoria_controller.add_nomeacao(categorias_raw, filme)
 
@@ -80,10 +81,7 @@ class FilmeController:
 
         print("\nFilme cadastrado com sucesso!\n")
 
-    def add_filme(self, nome, ano_lancamento, nome_diretor, categorias):
-        # Buscar diretor pelo nome
-        diretor = next(
-            (d for d in self.__profissional_controller.diretores() if d.nome.lower() == nome_diretor.lower()), None)
-        if not diretor:
-            print(f"Diretor '{nome_diretor}' não encontrado. Cadastre o profissional primeiro.")
-            return
+    def add_filme(self, nome: str, ano: int, diretor: Diretor):
+        filme = Filme( self.__edicao.filmes_id , nome, ano, diretor)
+        self.__edicao.filmes.append(filme)
+        return filme

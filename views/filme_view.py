@@ -9,7 +9,7 @@ from views.profissional_view import ProfissionalView
 class FilmeView:
 
     def __init__(self):
-        self.__profissionais_view = ProfissionalView()
+        self.profissionais_view = ProfissionalView()
 
     def mostrar_tela(self):
         print("\n=== Filmes ===")
@@ -27,8 +27,8 @@ class FilmeView:
 
         print("\n--- Lista de Filmes ---")
         for filme in filmes:
-            categorias_str = ', '.join([cat.nome for cat in filme.categorias_concorrendo])
-            print(f"Título: {filme.titulo}")
+            categorias_str = ', '.join([cat.nome for cat in filme.categorias])
+            print(f"Título: {filme.nome}")
             print(f"Ano: {filme.ano_lancamento}")
             print(f"Diretor: {filme.diretor.nome}")
             print(f"Categorias: {categorias_str}")
@@ -73,7 +73,7 @@ class FilmeView:
                     continue
                 return {"nome": None, "data": None, "id": diretor_id}
             elif opcao == "2":
-                diretor_nome, diretor_data_nascimento = self.__profissionais_view.cadastrar_diretor()
+                diretor_nome, diretor_data_nascimento = self.profissionais_view.cadastrar_diretor()
                 return {"nome": diretor_nome, "data": diretor_data_nascimento, "id": "novo"}
             elif opcao == "0":
                 return None
@@ -85,3 +85,4 @@ class FilmeView:
         categorias_input = input(">> ").strip()
 
         return categorias_input
+

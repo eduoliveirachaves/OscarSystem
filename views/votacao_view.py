@@ -37,19 +37,59 @@ class VotacaoView:
 
 
     def escolher_categoria_tela(self, categorias: List[Categoria], nome: str):
+        if not categorias:
+            print("Nenhuma categoria disponível para votação.")
+            return "0"
+
         print("\n--- TELA DE VOTACAO ---\n")
         print(f"Em que categoria você gostaria de votar {nome} ?")
         for categoria in categorias:
             print(f"{categoria.id} - {categoria.nome}")
+        print("\n0 - Cancelar votação\n")
 
-        return input("Digite o ID da categoria: ")
+        categoria_escolhida = input("Digite o ID da categoria: ")
+
+        if categoria_escolhida == "0":
+            return "0"
+
+        if not categoria_escolhida.isdigit():
+            print("ID INVÁLIDO. Tente novamente.")
+            return None
+
+        categoria_escolhida = int(categoria_escolhida)
+        if categoria_escolhida not in [categoria.id for categoria in categorias]:
+            print("CATEGORIA INVÁLIDA. Tente novamente.")
+            return None
+
+        return categoria_escolhida
 
     def escolher_indicado_tela(self, categoria: Categoria):
+
+        if not categoria.indicados:
+            print("Nenhum indicado disponível para votação.")
+            return "0"
+
         print(f"\nIndicados na categoria {categoria.nome}: \n")
         for indicado in categoria.indicados:
             print(indicado)
+        print("\n0 - Cancelar votação\n")
 
-        return input("Digite o ID do indicado: ")
+        escolhido = input("Digite o ID do indicado: ")
+
+        if escolhido == "0":
+            return "0"
+
+        if not escolhido.isdigit():
+            print("ID INVÁLIDO. Tente novamente.")
+            return None
+
+        escolhido = int(escolhido)
+
+        if escolhido not in [indicado.id for indicado in categoria.indicados]:
+            print("ESCOLHA INVALIDA. Tente novamente.")
+            return None
+
+        return escolhido
 
     def visualizar_votos_tela(self, votos):
         print("\n--- Votos ---\n")

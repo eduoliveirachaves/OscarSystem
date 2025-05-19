@@ -1,14 +1,12 @@
 class Categoria:
-    __id_counter = 1
-    # tipo se refere a que tipo de indicados a lista tera! como para filmes ou para atores ou para pessoas que .....
-    def __init__(self, nome):
-        self.__id = Categoria.__id_counter
+    # tipo se refere a que tipo de indicados a lista tera! como para filmes ou para atores ou para pessoas que ..
+    def __init__(self, id_counter, nome):
+        self.__id = id_counter
         self.__nome = nome
         self.__indicados = []
         self.__votos = []
         self.__tipo_indicados = "" # implementar
 
-        Categoria.__id_counter += 1
 
     @property
     def id(self):

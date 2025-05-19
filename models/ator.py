@@ -2,14 +2,11 @@ from models.profissional import Profissional
 
 
 class Ator(Profissional):
-    __id_counter = 1
-    def __init__(self, nome, nacionalidade, data_nascimento: str):
+    def __init__(self, id_counter, nome, nacionalidade, data_nascimento: str):
         super().__init__(nome, data_nascimento)
-        self.__id = Ator.__id_counter
+        self.__id = id_counter
         self.__nacionalidade = nacionalidade
         self.__categoria_concorrendo = []
-        Ator.__id_counter += 1
-
 
     @property
     def id(self):
@@ -44,6 +41,3 @@ class Ator(Profissional):
 
     def __str__(self):
         return f"[{self.__id}] - {self._nome} - {self._data_nascimento} - {self.__nacionalidade}"
-
-
-

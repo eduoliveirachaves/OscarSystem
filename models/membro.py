@@ -3,14 +3,17 @@ from models.voto import Voto
 
 
 class Membro(Profissional):
+    _id_counter = 1
     def __init__(self, nome, data_nascimento, nacionalidade):
         super().__init__(nome, data_nascimento)
+        self.__id = Membro._id_counter
         self.__nacionalidade = nacionalidade
         self.__votos = []
+        Membro._id_counter += 1
 
     @property
     def id(self):
-        return self._id
+        return self.__id
 
     @property
     def nome(self):

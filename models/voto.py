@@ -23,4 +23,4 @@ class Voto:
         return self.__escolhido
 
     def __str__(self):
-        return f"{self.__membro} - {self.categoria} - {self.escolhido}"
+        return f"{self.__membro.nome} - {self.__categoria.nome} - {self.__escolhido.nome}"

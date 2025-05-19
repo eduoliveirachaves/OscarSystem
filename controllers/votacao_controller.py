@@ -1,9 +1,6 @@
-from typing import List
-
 from controllers.categoria_controller import CategoriaController
-from controllers.filme_controller import FilmeController
 from controllers.membro_controller import MembroController
-from controllers.profissional_controller import ProfissionalController
+from models.edicao import Edicao
 from models.membro import Membro
 from models.voto import Voto
 from views.votacao_view import VotacaoView
@@ -11,19 +8,16 @@ from views.votacao_view import VotacaoView
 
 class VotacaoController:
 
-    def __init__(self, votos: List[Voto], membro_controller: MembroController,
-                 categoria_controller: CategoriaController, filme_controller: FilmeController,
-                 profissional_controller: ProfissionalController):
-        self.__votos = votos
+    def __init__(self, edicao: Edicao, membro_controller: MembroController,
+                 categoria_controller: CategoriaController):
+        self.__edicao = edicao
         self.__view = VotacaoView()
         self.__membro_controller = membro_controller
         self.__categoria_controller = categoria_controller
-        self.__filme_controller = filme_controller
-        self.__profissional_controller = profissional_controller
 
     @property
     def votos(self):
-        return self.__votos
+        return self.__edicao.votos
 
     def iniciar(self):
         opcao = self.__view.mostrar_tela()
@@ -34,7 +28,7 @@ class VotacaoController:
             elif opcao == "2":
                 self.__membro_controller.cadastrar()
             elif opcao == "3":
-                self.__view.visualizar_votos_tela(self.__votos)
+                self.__view.visualizar_votos_tela(self.__edicao.votos)
             else:
                 print("Opção inválida")
             opcao = self.__view.mostrar_tela()
@@ -53,7 +47,10 @@ class VotacaoController:
             if opcao == "1":
                 self.visualizar_votos(membro)
             elif opcao == "2":
-                self.realizar_voto(membro)
+                res = self.realizar_voto(membro)
+                if res:
+                    self.add_voto(res)
+                    print("Voto realizado com sucesso!")
             else:
                 print("Opção inválida")
             opcao = self.__view.menu_membro_tela(membro.nome)
@@ -63,26 +60,70 @@ class VotacaoController:
                      membro.nome == nome and membro.data_nascimento == data_nascimento), None)
 
     def add_voto(self, voto: Voto):
-        self.__votos.append(voto)
+        self.__edicao.votos.append(voto)
 
     def visualizar_votos(self, membro):
-        votos_do_membro = [voto for voto in self.__votos if voto.membro == membro]
+        votos_do_membro = [voto for voto in self.__edicao.votos if voto.membro == membro]
         self.__view.visualizar_votos_tela(votos_do_membro)
 
     def realizar_voto(self, membro: Membro):
-        categoria = self.__view.escolher_categoria_tela(self.__categoria_controller.categorias, membro.nome)
+        categorias = self.categorias_disponiveis(membro)
 
-        categoria = self.__categoria_controller.get_categoria_by_id(int(categoria))
+        categoria = self.escolher_categoria(categorias, membro.nome)
 
         if not categoria:
-            print("Categoria não encontrada.")
-            return
+            return None
 
-        escolhido = self.__view.escolher_indicado_tela(categoria)
-
-        escolhido = self.__categoria_controller.get_indicacao_by_id_and_categoria(int(escolhido), categoria)
+        escolhido = self.escolher_indicado(categoria)
 
         if not escolhido:
-            print("Indicado não encontrado.")
+            return None
 
-        self.add_voto(Voto(membro, categoria, escolhido))
+        voto = Voto(membro, categoria, escolhido)
+
+        return voto
+
+    def categorias_disponiveis(self, membro):
+        categorias = self.__edicao.categorias
+        return [c for c in categorias if
+                c.id not in [v.categoria.id for v in self.__edicao.votos if v.membro == membro]]
+
+    def escolher_categoria(self, categorias, nome_membro):
+        opcao, categoria = self.__view.escolher_categoria_tela(categorias, nome_membro), None
+
+        while True:
+
+            if opcao == "0":
+                print("Voto cancelado.")
+                return None
+
+            if opcao is not None:
+                categoria = self.__categoria_controller.get_categoria_by_id(int(opcao))
+
+                if not categoria:
+                    print("Categoria não encontrada.")
+                    continue
+
+                return categoria
+
+            opcao = self.__view.escolher_categoria_tela(categorias, nome_membro)
+        return None
+
+    def escolher_indicado(self, categoria):
+        escolhido = self.__view.escolher_indicado_tela(categoria)
+
+        while True:
+            if escolhido == "0":
+                print("Voto cancelado.")
+                return None
+
+            if escolhido is not None:
+                escolhido = self.__categoria_controller.get_indicacao_by_id_and_categoria(int(escolhido), categoria)
+
+                if escolhido is None:
+                    print("Indicado não encontrado.")
+                    continue
+
+                return escolhido
+            escolhido = self.__view.escolher_indicado_tela(categoria)
+        return None

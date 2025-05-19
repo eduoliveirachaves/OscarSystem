@@ -4,7 +4,7 @@ from models.membro import Membro
 
 class MembroView:
     def mostrar_tela(self):
-        print("\nMembros da Academia\n")
+        print("\n=== MEMBROS DA ACADEMIA ===\n")
         print("1 - Visualizar membros")
         print("2 - Cadastrar membros")
         print("3 - Editar membros")
@@ -20,6 +20,8 @@ class MembroView:
         return nome, data_nascimento, nacionalidade
 
     def visualizar_membros(self, membros: list):
+        print("\n--- Lista de Membros ---\n")
+        print("Nome - Nacionalidade - Data de Nascimento")
         if len(membros) == 0:
             print("\nNenhum membro cadastrado")
             return
