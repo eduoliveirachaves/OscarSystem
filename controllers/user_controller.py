@@ -1,18 +1,16 @@
 from typing import List
 
-from controllers.admin_controller import AdminController
-from controllers.membro_controller import MembroController
 from models.edicao import Edicao
 from views.user_view import UserView
 
 
 class UserController:
-    def __init__(self, sistema_controller):
-        self.__sistema_controller = sistema_controller
-        self.__edicoes = self.__sistema_controller.edicoes
+    def __init__(self):
+        self.__sistema_controller = None
         self.__view = UserView()
 
-    def iniciar(self):
+    def iniciar(self, sistema_controller):
+        self.__sistema_controller = sistema_controller
         opcao = self.__view.mostrar_tela()
         edicoes = self.__sistema_controller.edicoes
 
@@ -40,3 +38,8 @@ class UserController:
 
     def edicao_especifica(self, edicao: Edicao):
         pass
+
+    def carregar_edicoes(self, carregar_dados):
+        if carregar_dados:
+            return [Edicao(2024), Edicao(2023), Edicao(2022)]
+        return []

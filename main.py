@@ -1,4 +1,5 @@
-from controllers.sistema_controller import SistemaController
+from controllers.app_controller import AppController
+from controllers.edicoes_controller import EdicoesController
 
-sistema = SistemaController(True)
-sistema.iniciar()
+app = AppController(True)
+app.iniciar()

@@ -1,30 +1,13 @@
 class SistemaView:
 
+
     def mostrar_tela(self):
-        print("\n=== BEM VINDO AO SISTEMA DO OSCAR ===\n")
-        print("1 - Acessar Relatórios")
-        print("2 - Acessar Membros da Academia")
-        print("3 - Acessar Edições")
-        print("0 - Sair")
-
-        opcao = input("\nDigite a opção desejada: ")
-
-        return opcao
-
-    def home_tela(self, ano: int):
-        print(f"\n=== OSCAR {ano} ===\n")
-        print("1 - Relatórios")
-        print("2 - Membros da Academia")
-        print("0 - Sair")
-        opcao = input("\nDigite a opção desejada: ")
-        return opcao
-
-    def edicao_tela(self):
         print("\n=== EDIÇÃO ===\n")
         print("1 - Acessar Edição")
         print("2 - Cadastrar Edição")
         print("0 - Voltar")
         return input("\nDigite a opção desejada: ")
+
 
     def cadastrar_edicao_tela(self, edicoes: list):
         print("\n=== CADASTRAR EDIÇÃO ===\n")
@@ -34,7 +17,7 @@ class SistemaView:
         print("\n0 - Voltar")
         ano = input("Ano: ")
         if ano == "0":
-            return "0"
+            return  "0"
 
         if 1900 <= int(ano) > 2030:
             return None

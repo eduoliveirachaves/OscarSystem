@@ -2,20 +2,21 @@ from controllers.categoria_controller import CategoriaController
 from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.filme_controller import FilmeController
+from controllers.user_controller import UserController
 from controllers.votacao_controller import VotacaoController
 from data.data_loader import DataLoader
 from models.edicao import Edicao  # Criamos esta classe
-from views.admin_view import AdminView
+from views.edicao_view import EdicaoView
 from models.ator import Ator
 from models.membro import Membro
 
 
-class AdminController:
+class EdicaoController:
     def __init__(self, carregar_dados: bool, edicao: Edicao, membros_controller: MembroController):
         # Centralize tudo numa edição
         self.__edicao = edicao
         self.__membro_controller = membros_controller
-        self.__view = AdminView()
+        self.__view = EdicaoView()
 
         # Passa a edição para todos os controllers
         self.__categoria_controller = CategoriaController(self.__edicao)
@@ -23,16 +24,28 @@ class AdminController:
         self.__filme_controller = FilmeController(self.__edicao, self.__profissional_controller,
                                                   self.__categoria_controller)
         self.__votos_controller = VotacaoController(
-            self.__edicao,
-            self.__membro_controller,
-            self.__categoria_controller,
+            edicao=self.__edicao,
+            membro_controller=self.__membro_controller,
+            categoria_controller=self.__categoria_controller,
         )
 
         if carregar_dados:
             self.carregar_dados(edicao.ano)
 
     def iniciar(self):
-        opcao = self.__view.mostrar_tela()
+        opcao = self.__view.mostrar_tela(self.__edicao.ano)
+        while opcao != "0":
+            if opcao == "1":
+                self.edicao()
+            elif opcao == "2":
+                self.__votos_controller.iniciar()
+            else:
+                print("Opção inválida")
+
+            opcao = self.__view.mostrar_tela(self.__edicao.ano)
+
+    def edicao(self):
+        opcao = self.__view.edicao_tela(self.__edicao.ano)
         while opcao != "0":
             if opcao == "1":
                 self.__filme_controller.iniciar()
@@ -40,13 +53,9 @@ class AdminController:
                 self.__profissional_controller.iniciar()
             elif opcao == "3":
                 self.__categoria_controller.iniciar()
-            elif opcao == "4":
-                self.__membro_controller.iniciar()
-            elif opcao == "5":
-                self.__votos_controller.iniciar()
             else:
                 print("Opção inválida")
-            opcao = self.__view.mostrar_tela()
+            opcao = self.__view.edicao_tela(self.__edicao.ano)
 
     def carregar_dados(self, ano: int):
 
