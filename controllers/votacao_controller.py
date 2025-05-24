@@ -127,3 +127,5 @@ class VotacaoController:
                 return escolhido
             escolhido = self.__view.escolher_indicado_tela(categoria)
         return None
+
+

@@ -1,10 +1,16 @@
+from typing import List
+
+from models.categoria import Categoria
+from models.indicavel import Indicavel
 from models.profissional import Profissional
 
 
-class Diretor(Profissional):
+class Diretor(Profissional, Indicavel):
     def __init__(self, id_counter, nome, data_nascimento):
         super().__init__(nome, data_nascimento)
         self.__id = id_counter
+        self.__tipo = "Diretor(a)"
+        self.__categorias: List[Categoria] = []
 
     @property
     def nome(self):
@@ -18,6 +24,14 @@ class Diretor(Profissional):
     def id(self):
         return self.__id
 
+    @property
+    def categorias(self):
+        return self.__categorias
+
+    @property
+    def tipo(self):
+        return self.__tipo
+
     @nome.setter
     def nome(self, nome):
         self._nome = nome
@@ -26,5 +40,11 @@ class Diretor(Profissional):
     def data_nascimento(self, data_nascimento):
         self._data_nascimento = data_nascimento
 
+    def add_categoria(self, categoria):
+        self.__categorias.append(categoria)
+
+    def remove_categoria(self, categoria):
+        self.__categorias.remove(categoria)
+
     def __str__(self):
-        return f"[{self.__id}] - {self._nome} - {self._data_nascimento}"
+        return f"ID: [{self.__id}] - {self._nome} - {self._data_nascimento} - {self.__tipo}"

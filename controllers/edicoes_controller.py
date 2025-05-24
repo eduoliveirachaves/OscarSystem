@@ -1,7 +1,7 @@
 from controllers.edicao_controller import EdicaoController
 from controllers.membro_controller import MembroController
 from models.edicao import Edicao
-from views.sistema_view import SistemaView
+from views.edicoes_view import SistemaView
 
 
 class EdicoesController:

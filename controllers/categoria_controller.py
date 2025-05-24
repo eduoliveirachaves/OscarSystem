@@ -1,5 +1,9 @@
+from typing import List
+
 from models.categoria import Categoria
 from models.edicao import Edicao
+from models.indicacao import Indicacao
+from models.indicavel import Indicavel
 from views.categoria_view import CategoriaView
 
 
@@ -56,22 +60,19 @@ class CategoriaController:
                 print("Opção inválida")
             opcao = self.__view.mostrar_tela()
 
-    def add_nomeacao(self, categorias_raw: str, nomeacao):
-        # converter string em lista de inteiros
-        if isinstance(categorias_raw, str):
-            categorias_raw = [int(c.strip()) for c in categorias_raw.split(",") if c.strip().isdigit()]
+    def add_nomeacao(self, categoria_str: str, nomeacao: Indicavel):
+        categorias = self.get_categorias_by_string(categoria_str)
 
-        for categoria_id in categorias_raw:
-            categoria_obj = next(
-                (cat_existente for cat_existente in self.__edicao.categorias if cat_existente.id == categoria_id),
-                None
-            )
+        # revisar
+        if not categorias:
+            return False
 
-            if categoria_obj is None:
-                print(f"ERRO: Categoria ID '{categoria_id}' não encontrada. Verifique se foi cadastrada.")
-                return False
-            nomeacao.add_categoria_concorrendo(categoria_obj)
-            categoria_obj.add_indicado(nomeacao)
+        for categoria in categorias:
+            # add a categoria ao indicado (Ator, Diretor, Filme) para que ele saiba suas categorias
+            nomeacao.add_categoria(categoria)
+            # cria um objeto indicacao - serve pra que cada indicacao/categoria possa rastrear seu voto
+            indicado = Indicacao(nomeacao)
+            categoria.add_indicado(indicado)
 
         return True
 
@@ -80,3 +81,24 @@ class CategoriaController:
 
     def get_indicacao_by_id_and_categoria(self, nomeacao_id: int, categoria: Categoria):
         return next((nomeacao for nomeacao in categoria.indicados if nomeacao.id == nomeacao_id), None)
+
+    def get_categorias_by_string(self, categoria_str: str):
+        categorias: List[Categoria] = []  # armazena os objetos
+
+        # converter string em lista de inteiros
+        if isinstance(categoria_str, str):
+            categoria_str = [int(c.strip()) for c in categoria_str.split(",") if c.strip().isdigit()]
+
+        for categoria_id in categoria_str:
+            categoria = self.get_categoria_by_id(categoria_id)
+
+            if categoria is None:
+                print(f"ERRO: Categoria ID '{categoria_id}' não encontrada. Verifique se foi cadastrada.")
+                return []
+
+            categorias.append(categoria)
+
+        return categorias
+
+
+

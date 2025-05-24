@@ -6,13 +6,16 @@ from models.indicavel import Indicavel
 
 
 class Filme(Indicavel):
+
     # genero? custo? bilheteria? duracao? elenco?
     def __init__(self, id_counter: int, nome: str, ano_lancamento: int, diretor: Diretor):
-        super().__init__(nome, [])
+        self.__nome = nome
         self.__id = id_counter
         self.__diretor = diretor
         self.__ano_lancamento = ano_lancamento
         self.__elenco = []
+        self.__tipo = "Filme"
+        self.__categoria: List[Categoria] = []
 
     @property
     def id(self):
@@ -20,7 +23,7 @@ class Filme(Indicavel):
 
     @property
     def nome(self):
-        return self._nome
+        return self.__nome
 
     @property
     def diretor(self):
@@ -31,16 +34,16 @@ class Filme(Indicavel):
         return self.__ano_lancamento
 
     @property
-    def categorias(self):
-        return self._categorias
+    def tipo(self):
+        return self.__tipo
 
-    # quando faz sentido alterar algo como nome, diretor, ano de lancamento?
-    # parecem dados imutaveis que nao precisam de setter definido
-    # ta aqui de qualquer jeito!
+    @property
+    def categorias(self):
+        return self.__categoria
 
     @nome.setter
     def nome(self, nome):
-        self._nome = nome
+        self.__nome = nome
 
     @diretor.setter
     def diretor(self, diretor):
@@ -50,8 +53,11 @@ class Filme(Indicavel):
     def ano_lancamento(self, ano_lancamento):
         self.__ano_lancamento = ano_lancamento
 
-    def add_categoria_concorrendo(self, categoria: Categoria):
-        self._categorias.append(categoria)
+    def add_categoria(self, categoria: Categoria):
+        self.__categoria.append(categoria)
+
+    def remove_categoria(self, categoria: Categoria):
+        self.__categoria.remove(categoria)
 
     def __str__(self):
-        return f"[{self.__id}] {self._nome} - {self.__ano_lancamento} - By {self.__diretor.nome}"
+        return f"[{self.__id}] {self.__nome} - {self.__ano_lancamento} - By {self.__diretor.nome}"

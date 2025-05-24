@@ -2,7 +2,6 @@ from controllers.categoria_controller import CategoriaController
 from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.filme_controller import FilmeController
-from controllers.user_controller import UserController
 from controllers.votacao_controller import VotacaoController
 from data.data_loader import DataLoader
 from models.edicao import Edicao  # Criamos esta classe
@@ -32,11 +31,19 @@ class EdicaoController:
         if carregar_dados:
             self.carregar_dados(edicao.ano)
 
+    @property
+    def edicao(self):
+        return self.__edicao
+
+    @property
+    def categoria_controller(self):
+        return self.__categoria_controller
+
     def iniciar(self):
         opcao = self.__view.mostrar_tela(self.__edicao.ano)
         while opcao != "0":
             if opcao == "1":
-                self.edicao()
+                self.edicao_menu()
             elif opcao == "2":
                 self.__votos_controller.iniciar()
             else:
@@ -44,7 +51,7 @@ class EdicaoController:
 
             opcao = self.__view.mostrar_tela(self.__edicao.ano)
 
-    def edicao(self):
+    def edicao_menu(self):
         opcao = self.__view.edicao_tela(self.__edicao.ano)
         while opcao != "0":
             if opcao == "1":

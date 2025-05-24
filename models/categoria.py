@@ -1,12 +1,17 @@
+from typing import List
+
+from models.resultado_categoria import ResultadoCategoria
+from models.indicacao import Indicacao
+
+
 class Categoria:
     # tipo se refere a que tipo de indicados a lista tera! como para filmes ou para atores ou para pessoas que ..
     def __init__(self, id_counter, nome):
         self.__id = id_counter
         self.__nome = nome
-        self.__indicados = []
-        self.__votos = []
-        self.__tipo_indicados = "" # implementar
-
+        self.__indicados: List[Indicacao] = []
+        # self.__tipo_indicados = "" # implementar
+        self.__vencedor = None
 
     @property
     def id(self):
@@ -20,10 +25,6 @@ class Categoria:
     def indicados(self):
         return self.__indicados
 
-    @property
-    def votos(self):
-        return self.__votos
-
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
@@ -31,8 +32,23 @@ class Categoria:
     def add_indicado(self, indicado):
         self.__indicados.append(indicado)
 
-    def add_voto(self, voto):
-        self.__votos.append(voto)
+    def definir_vencedor(self):
+        vencedor = None
+        if not self.__indicados:
+            return None
+
+        max_votos = max(ind.votos for ind in self.__indicados)
+        vencedores: List[Indicacao] = [ind for ind in self.__indicados if ind.votos == max_votos]
+
+        if len(vencedores) == 1:
+            vencedor = vencedores[0].indicado
+        else:
+            # criar criterio de desempate !
+            vencedor = vencedores[0].indicado
+
+        self.__vencedor = ResultadoCategoria(vencedor, max_votos)
+
+        return self.__vencedor
 
     def __str__(self):
-        return f"{self.__id} - {self.__nome} - {self.__tipo_indicados}"
+        return f"{self.__id} - {self.__nome} - {self.__indicados}"
