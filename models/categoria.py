@@ -10,7 +10,7 @@ class Categoria:
         self.__nome = nome
         self.__indicados: List[Indicacao] = []
         self.__tipo_indicados = tipo_indicados  # tipo de indicados, como filme, ator, diretor, etc.
-        self.__vencedor = None
+        self.__vencedor = "Nenhum"
 
     @property
     def id(self):
@@ -19,6 +19,10 @@ class Categoria:
     @property
     def nome(self):
         return self.__nome
+
+    @property
+    def vencedor(self):
+        return self.__vencedor
 
     @property
     def indicados(self):

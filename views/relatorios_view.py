@@ -57,7 +57,7 @@ class RelatoriosView:
             return
 
         for vencedor in vencedores:
-            print(f"{vencedor.categoria.nome} - {vencedor.vencedor.nome} ({vencedor.ano})")
+            print(f"{vencedor.categoria.nome} - {vencedor.vencedor}")
 
         input("Pressione ENTER para continuar...")
 

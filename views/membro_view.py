@@ -1,5 +1,4 @@
-from models.categoria import Categoria
-from models.membro import Membro
+from datetime import datetime
 
 
 class MembroView:
@@ -14,10 +13,29 @@ class MembroView:
 
     def tela_cadastro(self):
         print("Digite seu nome e data de nascimento:")
-        nome = input("nome: ")
-        data_nascimento = input("data de nascimento: ")
-        nacionalidade = input("Digite sua nacionalidade: ")
+
+        while True:
+            nome = input("Nome: ").strip()
+            if nome:
+                break
+            print("Nome não pode estar vazio.")
+
+        while True:
+            data_nascimento = input("Data de nascimento (dd/mm/aaaa): ").strip()
+            try:
+                datetime.strptime(data_nascimento, "%d/%m/%Y")
+                break
+            except ValueError:
+                print("Formato de data inválido. Use dd/mm/aaaa.")
+
+        while True:
+            nacionalidade = input("Digite sua nacionalidade: ").strip()
+            if nacionalidade:
+                break
+            print("Nacionalidade não pode estar vazia.")
+
         return nome, data_nascimento, nacionalidade
+
 
     def visualizar_membros(self, membros: list):
         print("\n--- Lista de Membros ---\n")

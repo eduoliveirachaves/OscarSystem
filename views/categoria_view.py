@@ -40,7 +40,7 @@ class CategoriaView:
         print("\nEditar categoria\n")
         print("1 - Adicionar indicados")
         print("2 - Remover indicados")
-        print("3 = Editar nome")
+        print("3 - Editar nome")
         print("0 - Sair")
         opcao = input("\nDigite a opção desejada: ")
         return opcao

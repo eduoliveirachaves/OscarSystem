@@ -24,4 +24,4 @@ class Voto:
 
 
     def __str__(self):
-        return f"{self.__membro.nome} - {self.__categoria.nome}"
+        return f"Membro: {self.__membro.nome} - Categoria: {self.__categoria.nome}"

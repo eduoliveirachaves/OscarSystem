@@ -64,7 +64,7 @@ class VotacaoController:
             for indicacao in categoria.indicados:
                 for voto in indicacao.votos:
                     if voto.membro == membro:
-                        votos_do_membro.append(voto)
+                        votos_do_membro.append(f"{voto} = Escolha: {indicacao.indicado}")
 
         return votos_do_membro
 

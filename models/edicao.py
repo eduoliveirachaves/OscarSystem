@@ -2,7 +2,10 @@ from typing import List
 
 from models.categoria import Categoria
 from models.filme import Filme
+from models.filme_premiado import FilmePremiado
+from models.indicavel import Indicavel
 from models.profissional import Profissional
+from models.vencedor_categoria import VencedorCategoria
 
 
 class Edicao:
@@ -24,6 +27,8 @@ class Edicao:
     @property
     def categorias(self):
         return self.__categorias
+
+
 
     @property
     def filmes(self):
@@ -62,8 +67,17 @@ class Edicao:
 
     def get_vencedores(self):
         vencedores = []
-        for categoria in self.__categorias:
-            vencedor = categoria.definir_vencedor()
-            if vencedor:
-                vencedores.append(vencedor)
+
+        for categoria in self.categorias:
+            categoria.definir_vencedor()
+
+            vencedores.append(VencedorCategoria(
+                categoria=categoria,
+                vencedor=categoria.vencedor,
+            ))
+
         return vencedores
+
+    def get_top_filmes_premiados(self):
+        pass
+
