@@ -16,7 +16,7 @@ class FilmeView:
         print("1 - Visualizar filmes")
         print("2 - Cadastrar filme")
         print("3 - Editar filme")
-        print("0 - Voltar")
+        print("\n0 - Voltar")
         opcao = input(">> ")
         return opcao
 
@@ -32,23 +32,18 @@ class FilmeView:
             print(f"Diretor: {filme.diretor.nome}")
             print("-" * 30)
 
-    def cadastrar_filme(self, diretores: List[Diretor], categorias: List[Categoria]):
+    def cadastrar_filme(self, diretores: List[Diretor]):
         print("\n=== Cadastrar Filme ===")
         nome = input("Título: ").strip()
-        ano_lancamento = input("Ano de lançamento: ").strip()
 
         diretor_obj = self.tela_selecao_diretor(diretores)
 
         if not diretor_obj:
             return None
 
-        categorias_input = self.tela_selecao_categoria(categorias)
-
         return {
             "nome": nome,
-            "ano": ano_lancamento,
-            "diretor": diretor_obj,
-            "categorias_raw": categorias_input
+            "diretor": diretor_obj
         }
 
     def tela_selecao_diretor(self, diretores: List[Diretor]):

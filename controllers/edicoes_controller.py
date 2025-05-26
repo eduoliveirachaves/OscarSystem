@@ -5,7 +5,6 @@ from controllers.membro_controller import MembroController
 from controllers.profissional_controller import ProfissionalController
 from controllers.votacao_controller import VotacaoController
 from data.data_loader import DataLoader
-from models.ator import Ator
 from models.edicao import Edicao
 from models.membro import Membro
 from views.edicoes_view import EdicoesView
@@ -14,11 +13,11 @@ from views.edicoes_view import EdicoesView
 class EdicoesController:
     def __init__(self, membro_controller: MembroController):
         self.__view = EdicoesView()
-        self.__edicoes = []
+        self.__edicoes = self.carregar_edicoes()
         self.__membro_controller = membro_controller
-        self.__categoria_controller = CategoriaController()
-        self.__profissional_controller = ProfissionalController(self.__categoria_controller)
-        self.__filme_controller = FilmeController(self.__profissional_controller, self.__categoria_controller)
+        self.__profissional_controller = ProfissionalController()
+        self.__filme_controller = FilmeController(self.__profissional_controller)
+        self.__categoria_controller = CategoriaController(self.__filme_controller, self.__profissional_controller)
         self.__votos_controller = VotacaoController(self.__membro_controller, self.__categoria_controller)
 
     @property
@@ -78,6 +77,11 @@ class EdicoesController:
         self.__votos_controller.set_edicao(edicao)
         return edicao
 
+    def carregar_edicoes(self):
+        return [Edicao(2024)]
+
+
+    # para fins de teste, carrega alguns dados iniciais de edições
     def carregar_dados(self, ano: int):
 
         data = DataLoader.carregar_dados(ano)
@@ -94,7 +98,7 @@ class EdicoesController:
 
         for categoria in categorias_basicas:
             nome, tipo = categoria.split(", ")
-            self.__categoria_controller.add_categoria(nome)
+            self.__categoria_controller.add_categoria(nome, tipo)
 
         for ator in atores_iniciais:
             nome, filme, ano, nacionalidade = ator.split(", ")
@@ -108,17 +112,11 @@ class EdicoesController:
             nome, ano, diretor_nome, categoria = filme.split(", ")
             diretor = next((d for d in self.__profissional_controller.diretores() if d.nome == diretor_nome), None)
             if diretor:
-                self.__filme_controller.add_filme(nome, int(ano), diretor)
+                self.__filme_controller.add_filme(nome, diretor)
 
         for nome in membros_iniciais:
             self.__membro_controller.membros.append(Membro(nome, "data", "Brazil"))
 
-        for profissional in self.__profissional_controller.profissionais:
-            if isinstance(profissional, Ator):
-                self.__categoria_controller.add_nomeacao("20", profissional)
-
-        for filme in self.__filme_controller.filmes:
-            self.__categoria_controller.add_nomeacao("23", filme)
 
     def get_edicao_controller(self, edicao: Edicao):
         self.set_edicao_controllers(edicao)

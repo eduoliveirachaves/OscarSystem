@@ -38,13 +38,13 @@ class DataLoader:
                      "Alexander Payne, 1961", "Cord Jefferson, 1981", "Martin Scorsese, 1942",
                      "Emerald Fennell, 1985", "Andrew Haigh, 1973", "Celine Song, 1988", "Michael Mann, 1943"]
 
-        categorias = ["Ator Coadjuvante, Ator", "Animação, Filme", "Curta de animação, Filme",
-                      "Figurino, Filme", "Roteiro Original, Filme", "Roteiro Adaptado, Filme",
-                      "Maquiagem e cabelo, Filme", "Edição, Filme", "Atriz Coadjuvante, Ator",
-                      "Direção de Arte, Filme", "Canção Original, Filme", "Curta documentário, Filme",
-                      "Documentário, Filme", "Som, Filme", "Efeitos Visuais, Filme", "Curta Live Action, Filme",
-                      "Fotografia, Filme", "Filme Internacional, Filme", "Trilha Original, Filme",
-                      "Ator, Ator", "Direção, Diretor", "Atriz, Ator", "Filme, Filme"]
+        categorias = ["Ator Coadjuvante, Ator", "Animação, Filme",
+                      "Roteiro Original, Filme", "Roteiro Adaptado, Filme",
+                      "Edição, Filme", "Atriz Coadjuvante, Atriz",
+                      "Direção de Arte, Filme", "Curta documentário, Filme",
+                      "Documentário, Filme", "Efeitos Visuais, Filme", "Curta Live Action, Filme",
+                      "Fotografia, Filme", "Filme Internacional, Filme",
+                      "Ator, Ator", "Direção, Diretor", "Atriz, Atriz", "Filme, Filme"]
 
         membros = ["membro1", "membro2", "membro3"]
         return {"success": True, "filmes": filmes, "atores": atores, "diretores": diretores,

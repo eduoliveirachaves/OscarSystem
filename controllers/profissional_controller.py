@@ -1,4 +1,3 @@
-from controllers.categoria_controller import CategoriaController
 from models.ator import Ator
 from models.diretor import Diretor
 from models.edicao import Edicao
@@ -7,10 +6,9 @@ from views.profissional_view import ProfissionalView
 
 class ProfissionalController:
 
-    def __init__(self, categoria_controller: CategoriaController):
+    def __init__(self):
         self.__edicao = None
         self.__profissional_view = ProfissionalView()
-        self.__categoria_controller = categoria_controller
 
     def set_edicao(self, edicao: Edicao):
         self.__edicao = edicao
@@ -54,11 +52,11 @@ class ProfissionalController:
             opcao = self.__profissional_view.tela_cadastro()
             if opcao == "1":
                 nome, nacionalidade, data_nascimento = self.__profissional_view.cadastrar_ator()
-                self.__edicao.profissionais.append(Ator(nome, nacionalidade, data_nascimento))
+                self.__edicao.profissionais.append(Ator(self.__edicao.atores_id, nome, nacionalidade, data_nascimento))
                 break
             elif opcao == "2":
                 nome, data_nascimento = self.__profissional_view.cadastrar_diretor()
-                self.__edicao.profissionais.append(Diretor(nome, data_nascimento))
+                self.__edicao.profissionais.append(Diretor(self.__edicao.diretores_id, nome, data_nascimento))
                 break
             elif opcao == "0":
                 break

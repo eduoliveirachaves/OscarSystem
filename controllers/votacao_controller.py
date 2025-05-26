@@ -8,127 +8,122 @@ from views.votacao_view import VotacaoView
 
 class VotacaoController:
 
-    def __init__(self, membro_controller: MembroController,
-                 categoria_controller: CategoriaController):
+    def __init__(self, membro_controller: MembroController, categoria_controller: CategoriaController):
         self.__edicao = None
         self.__view = VotacaoView()
         self.__membro_controller = membro_controller
         self.__categoria_controller = categoria_controller
 
     def set_edicao(self, edicao: Edicao):
-        self.__edicao = edicao
+        self.__edicao: Edicao = edicao
 
     @property
     def votos(self):
-        return self.__edicao.votos
+        return self.get_votos()
 
     def iniciar(self):
-        opcao = self.__view.mostrar_tela()
+        while (opcao := self.__view.mostrar_tela()) != "0":
+            match opcao:
+                case "1":
+                    self.fluxo_login_membro()
+                case "2":
+                    votos = self.get_votos()
+                    self.__view.visualizar_votos_tela(votos)
+                case _:
+                    print("Opção inválida")
 
-        while opcao != "0":
-            if opcao == "1":
-                self.cadastrado()
-            elif opcao == "2":
-                self.__membro_controller.cadastrar()
-            elif opcao == "3":
-                self.__view.visualizar_votos_tela(self.__edicao.votos)
-            else:
-                print("Opção inválida")
-            opcao = self.__view.mostrar_tela()
-
-    def cadastrado(self):
+    def fluxo_login_membro(self):
         nome, data = self.__view.membro_login_tela()
-        membro = self.autenticar(nome, data)
+        membro = self.autenticar_membro(nome, data)
 
         if not membro:
             print("Membro não encontrado.")
             return
 
-        opcao = self.__view.menu_membro_tela(membro.nome)
+        while (opcao := self.__view.menu_membro_tela(membro.nome)) != "0":
+            match opcao:
+                case "1":
+                    votos = self.get_votos_membro(membro)
+                    self.__view.visualizar_votos_tela(votos)
+                case "2":
+                    if self.criar_voto(membro):
+                        print("Voto realizado com sucesso!")
+                case _:
+                    print("Opção inválida")
 
-        while opcao != "0":
-            if opcao == "1":
-                self.visualizar_votos(membro)
-            elif opcao == "2":
-                res = self.realizar_voto(membro)
-                if res:
-                    self.add_voto(res)
-                    print("Voto realizado com sucesso!")
-            else:
-                print("Opção inválida")
-            opcao = self.__view.menu_membro_tela(membro.nome)
+    def autenticar_membro(self, nome, data_nascimento):
+        for membro in self.__membro_controller.membros:
+            if membro.nome == nome and membro.data_nascimento == data_nascimento:
+                return membro
+        return None
 
-    def autenticar(self, nome, data_nascimento):
-        return next((membro for membro in self.__membro_controller.membros if
-                     membro.nome == nome and membro.data_nascimento == data_nascimento), None)
+    def get_votos_membro(self, membro: Membro):
+        votos_do_membro = []
 
-    def add_voto(self, voto: Voto):
-        self.__edicao.votos.append(voto)
+        for categoria in self.__edicao.categorias:
+            for indicacao in categoria.indicados:
+                for voto in indicacao.votos:
+                    if voto.membro == membro:
+                        votos_do_membro.append(voto)
 
-    def visualizar_votos(self, membro):
-        votos_do_membro = [voto for voto in self.__edicao.votos if voto.membro == membro]
-        self.__view.visualizar_votos_tela(votos_do_membro)
+        return votos_do_membro
 
-    def realizar_voto(self, membro: Membro):
-        categorias = self.categorias_disponiveis(membro)
+    def get_votos(self):
+        votos = []
 
-        categoria = self.escolher_categoria(categorias, membro.nome)
+        for categoria in self.__edicao.categorias:
+            for indicacao in categoria.indicados:
+                for voto in indicacao.votos:
+                    votos.append(voto)
+
+        return votos
+
+    def criar_voto(self, membro: Membro):
+        categorias_disponiveis = self.get_categorias_disponiveis_para_membro(membro)
+        if not categorias_disponiveis:
+            print("Nenhuma categoria disponível para votar.")
+            return None
+
+        categoria = self.selecionar_categoria(categorias_disponiveis, membro.nome)
 
         if not categoria:
             return None
 
-        escolhido = self.escolher_indicado(categoria)
+        indicado = self.selecionar_indicado(categoria)
 
-        if not escolhido:
+        if not indicado:
             return None
 
-        voto = Voto(membro, categoria, escolhido)
+        return indicado.add_voto(Voto(membro, categoria))
 
-        return voto
+    def get_categorias_disponiveis_para_membro(self, membro: Membro):
+        return [
+            c for c in self.__edicao.categorias
+            if not any(voto.membro == membro for indicacao in c.indicados for voto in indicacao.votos)
+        ]
 
-    def categorias_disponiveis(self, membro):
-        categorias = self.__edicao.categorias
-        return [c for c in categorias if
-                c.id not in [v.categoria.id for v in self.__edicao.votos if v.membro == membro]]
-
-    def escolher_categoria(self, categorias, nome_membro):
-        opcao, categoria = self.__view.escolher_categoria_tela(categorias, nome_membro), None
-
+    def selecionar_categoria(self, categorias, nome_membro):
         while True:
-
+            opcao = self.__view.escolher_categoria_tela(categorias, nome_membro)
             if opcao == "0":
                 print("Voto cancelado.")
                 return None
 
-            if opcao is not None:
-                categoria = self.__categoria_controller.get_categoria_by_id(int(opcao))
-
-                if not categoria:
-                    print("Categoria não encontrada.")
-                    continue
-
+            categoria = self.__categoria_controller.get_categoria_by_id(int(opcao))
+            if categoria:
                 return categoria
 
-            opcao = self.__view.escolher_categoria_tela(categorias, nome_membro)
-        return None
+            print("Categoria não encontrada.")
 
-    def escolher_indicado(self, categoria):
-        escolhido = self.__view.escolher_indicado_tela(categoria)
-
+    def selecionar_indicado(self, categoria):
         while True:
-            if escolhido == "0":
+            opcao = self.__view.escolher_indicado_tela(categoria)
+            if opcao == "0":
                 print("Voto cancelado.")
                 return None
 
-            if escolhido is not None:
-                escolhido = self.__categoria_controller.get_indicacao_by_id_and_categoria(int(escolhido), categoria)
+            indicado = self.__categoria_controller.get_indicacao_by_id_and_categoria(int(opcao), categoria)
+            if indicado:
+                return indicado
 
-                if escolhido is None:
-                    print("Indicado não encontrado.")
-                    continue
-
-                return escolhido
-            escolhido = self.__view.escolher_indicado_tela(categoria)
-        return None
-
-
+            print("Indicado não encontrado.")

@@ -1,5 +1,3 @@
-from typing import List
-
 from controllers.categoria_controller import CategoriaController
 from controllers.profissional_controller import ProfissionalController
 from models.diretor import Diretor
@@ -10,12 +8,10 @@ from views.filme_view import FilmeView
 
 class FilmeController:
 
-    def __init__(self, profissional_controller: ProfissionalController,
-                 categoria_controller: CategoriaController):
+    def __init__(self, profissional_controller: ProfissionalController):
         self.__edicao = None
         self.__view = FilmeView()
         self.__profissional_controller = profissional_controller
-        self.__categoria_controller = categoria_controller
 
     @property
     def filmes(self):
@@ -43,21 +39,18 @@ class FilmeController:
         self.__view.visualizar_filmes(self.__edicao.filmes)
 
     def cadastrar_filme(self):
-        categorias = self.__categoria_controller.categorias
         diretores = self.__profissional_controller.diretores()
-        input_data = self.__view.cadastrar_filme(diretores, categorias)
+        input_data = self.__view.cadastrar_filme(diretores)
 
         if not input_data:
             print("Cadastro cancelado.")
             return
 
         nome = input_data["nome"]
-        ano = input_data["ano"]
         diretor_info = input_data["diretor"]
-        categorias_raw = input_data["categorias_raw"]
 
         # Verifica se alguma informacao esta faltando ou talvez se a operacao foi cancelada
-        if not nome or not ano or not diretor_info or not categorias_raw:
+        if not nome or not diretor_info:
             print("Preencha todos os campos.")
             return
 
@@ -71,20 +64,11 @@ class FilmeController:
                 print(f"ERRO: Diretor '{diretor_info['nome']}' não encontrado. Cadastre o profissional primeiro.")
                 return
 
-
-        filme = self.add_filme(nome, ano, diretor_obj)
-
-        sucesso = self.__categoria_controller.add_nomeacao(categorias_raw, filme)
-
-        if not sucesso:
-            print(
-                "Ocorreu algum erro ao adicionar as categorias. "
-                "Verifique se as categorias existem e se foram digitadas corretamente.")
-            return
+        filme = self.add_filme(nome, diretor_obj)
 
         print("\nFilme cadastrado com sucesso!\n")
 
-    def add_filme(self, nome: str, ano: int, diretor: Diretor):
-        filme = Filme( self.__edicao.filmes_id , nome, ano, diretor)
+    def add_filme(self, nome: str, diretor: Diretor):
+        filme = Filme(self.__edicao.filmes_id, nome, self.__edicao.ano - 1, diretor)
         self.__edicao.filmes.append(filme)
         return filme

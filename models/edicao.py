@@ -2,9 +2,7 @@ from typing import List
 
 from models.categoria import Categoria
 from models.filme import Filme
-from models.indicavel import Indicavel
 from models.profissional import Profissional
-from models.voto import Voto
 
 
 class Edicao:
@@ -14,7 +12,6 @@ class Edicao:
         self.__filmes: List[Filme] = []
         self.__categorias: List[Categoria] = []
         self.__profissionais: List[Profissional] = []
-        self.__votos: List[Voto] = []
         self.__filmes_id = 1
         self.__atores_id = 1
         self.__diretores_id = 1
@@ -27,10 +24,6 @@ class Edicao:
     @property
     def categorias(self):
         return self.__categorias
-
-    @property
-    def votos(self):
-        return self.__votos
 
     @property
     def filmes(self):

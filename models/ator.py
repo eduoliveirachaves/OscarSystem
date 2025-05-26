@@ -3,9 +3,9 @@ from models.profissional import Profissional
 
 
 class Ator(Profissional, Indicavel):
-    def __init__(self, id_counter, nome, nacionalidade, data_nascimento: str):
+    def __init__(self, id, nome, nacionalidade, data_nascimento: str):
         super().__init__(nome, data_nascimento)
-        self.__id = id_counter
+        self.__id = id
         self.__nacionalidade = nacionalidade
         self.__tipo = "Ator/Atriz"
 

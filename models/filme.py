@@ -44,5 +44,11 @@ class Filme(Indicavel):
     def ano_lancamento(self, ano_lancamento):
         self.__ano_lancamento = ano_lancamento
 
+    def __eq__(self, other):
+        return isinstance(other, Filme) and self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
+
     def __str__(self):
         return f"[{self.__id}] {self.__nome} - {self.__ano_lancamento} - By {self.__diretor.nome}"

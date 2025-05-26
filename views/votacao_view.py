@@ -10,11 +10,10 @@ class VotacaoView:
 
 
     def mostrar_tela(self):
-        print("Bem vindo ao sistema de votação do Oscar\n")
-        print("1 - Ja sou cadastrado")
-        print("2 - Não sou cadastrado")
-        print("3 - Visualizar votos") # so pra poder visualizar todos os votos
-        print("0 - Sair")
+        print("\n=== VOTAÇÃO ===\n")
+        print("1 - Ir para votacao")
+        print("2 - Visualizar todos os votos") # so pra poder visualizar todos os votos
+        print("\n0 - Sair")
         opcao = input("\nDigite a opção desejada: ")
         return opcao
 
@@ -85,7 +84,7 @@ class VotacaoView:
 
         escolhido = int(escolhido)
 
-        if escolhido not in [indicado.id for indicado in categoria.indicados]:
+        if escolhido not in [indicacao.indicado.id for indicacao in categoria.indicados]:
             print("ESCOLHA INVALIDA. Tente novamente.")
             return None
 
