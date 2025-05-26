@@ -1,6 +1,3 @@
-from typing import List
-
-from models.categoria import Categoria
 from models.diretor import Diretor
 from models.indicavel import Indicavel
 
@@ -13,9 +10,7 @@ class Filme(Indicavel):
         self.__id = id_counter
         self.__diretor = diretor
         self.__ano_lancamento = ano_lancamento
-        self.__elenco = []
         self.__tipo = "Filme"
-        self.__categoria: List[Categoria] = []
 
     @property
     def id(self):
@@ -37,10 +32,6 @@ class Filme(Indicavel):
     def tipo(self):
         return self.__tipo
 
-    @property
-    def categorias(self):
-        return self.__categoria
-
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
@@ -52,12 +43,6 @@ class Filme(Indicavel):
     @ano_lancamento.setter
     def ano_lancamento(self, ano_lancamento):
         self.__ano_lancamento = ano_lancamento
-
-    def add_categoria(self, categoria: Categoria):
-        self.__categoria.append(categoria)
-
-    def remove_categoria(self, categoria: Categoria):
-        self.__categoria.remove(categoria)
 
     def __str__(self):
         return f"[{self.__id}] {self.__nome} - {self.__ano_lancamento} - By {self.__diretor.nome}"

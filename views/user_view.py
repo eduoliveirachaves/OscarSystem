@@ -16,7 +16,7 @@ class UserView:
     def menu_relatorios_gerais(self):
         print("\n==== RELATÓRIOS GERAIS ====\n")
         print("1 - Indicações por ano e categoria")
-        print("2 - Votos por categoria e ano")
+        print("2 - Votos por ano e categoria")
         print("3 - Vencedores por categoria e edição")
         print("4 - Vencedores por nacionalidade")
         print("5 - Top 3 filmes mais premiados")

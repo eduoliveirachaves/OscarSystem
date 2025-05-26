@@ -30,8 +30,8 @@ class UserController:
         opcao = self.__view.menu_relatorios_gerais()
 
         while opcao != "0":
+            # filtrar por ano e categoria
             if opcao == "1":
-                # filtrar por ano e categoria
                 res = self.filtro_ano_categoria(edicoes)
 
                 if res:
@@ -39,6 +39,7 @@ class UserController:
                     self.__view.visualizar_indicados(categoria, ano)
 
 
+            # filtrar
             elif opcao == "2":
                 pass
                 # ano = self.__view.solicitar_ano()

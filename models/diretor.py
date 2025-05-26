@@ -10,7 +10,6 @@ class Diretor(Profissional, Indicavel):
         super().__init__(nome, data_nascimento)
         self.__id = id_counter
         self.__tipo = "Diretor(a)"
-        self.__categorias: List[Categoria] = []
 
     @property
     def nome(self):
@@ -25,10 +24,6 @@ class Diretor(Profissional, Indicavel):
         return self.__id
 
     @property
-    def categorias(self):
-        return self.__categorias
-
-    @property
     def tipo(self):
         return self.__tipo
 
@@ -39,12 +34,6 @@ class Diretor(Profissional, Indicavel):
     @data_nascimento.setter
     def data_nascimento(self, data_nascimento):
         self._data_nascimento = data_nascimento
-
-    def add_categoria(self, categoria):
-        self.__categorias.append(categoria)
-
-    def remove_categoria(self, categoria):
-        self.__categorias.remove(categoria)
 
     def __str__(self):
         return f"ID: [{self.__id}] - {self._nome} - {self._data_nascimento} - {self.__tipo}"

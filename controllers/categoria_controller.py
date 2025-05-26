@@ -68,8 +68,6 @@ class CategoriaController:
             return False
 
         for categoria in categorias:
-            # add a categoria ao indicado (Ator, Diretor, Filme) para que ele saiba suas categorias
-            nomeacao.add_categoria(categoria)
             # cria um objeto indicacao - serve pra que cada indicacao/categoria possa rastrear seu voto
             indicado = Indicacao(nomeacao)
             categoria.add_indicado(indicado)

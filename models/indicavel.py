@@ -11,18 +11,6 @@ class Indicavel(ABC):
     def tipo(self):
         pass
 
-    @abstractmethod
-    def categorias(self):
-        pass
-
-    @abstractmethod
-    def add_categoria(self, categoria):
-        pass
-
-    @abstractmethod
-    def remove_categoria(self, categoria):
-        pass
-
 
     @abstractmethod
     def __str__(self):
