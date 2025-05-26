@@ -63,3 +63,14 @@ class Edicao:
         counter = self.__diretores_id
         self.__diretores_id += 1
         return counter
+
+    def get_categoria_by_id(self, categoria_id):
+        pass
+
+    def get_vencedores(self):
+        vencedores = []
+        for categoria in self.__categorias:
+            vencedor = categoria.definir_vencedor()
+            if vencedor:
+                vencedores.append(vencedor)
+        return vencedores

@@ -10,9 +10,9 @@ from views.filme_view import FilmeView
 
 class FilmeController:
 
-    def __init__(self, edicao: Edicao, profissional_controller: ProfissionalController,
+    def __init__(self, profissional_controller: ProfissionalController,
                  categoria_controller: CategoriaController):
-        self.__edicao = edicao
+        self.__edicao = None
         self.__view = FilmeView()
         self.__profissional_controller = profissional_controller
         self.__categoria_controller = categoria_controller
@@ -20,6 +20,9 @@ class FilmeController:
     @property
     def filmes(self):
         return self.__edicao.filmes
+
+    def set_edicao(self, edicao: Edicao):
+        self.__edicao = edicao
 
     def iniciar(self):
         opcao = self.__view.mostrar_tela()

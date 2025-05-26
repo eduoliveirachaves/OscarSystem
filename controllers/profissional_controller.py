@@ -7,10 +7,13 @@ from views.profissional_view import ProfissionalView
 
 class ProfissionalController:
 
-    def __init__(self, edicao: Edicao, categoria_controller: CategoriaController):
-        self.__edicao = edicao
+    def __init__(self, categoria_controller: CategoriaController):
+        self.__edicao = None
         self.__profissional_view = ProfissionalView()
         self.__categoria_controller = categoria_controller
+
+    def set_edicao(self, edicao: Edicao):
+        self.__edicao = edicao
 
     @property
     def profissionais(self):

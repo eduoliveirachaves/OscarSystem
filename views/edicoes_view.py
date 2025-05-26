@@ -1,5 +1,4 @@
-class SistemaView:
-
+class EdicoesView:
 
     def mostrar_tela(self):
         print("\n=== EDIÇÃO ===\n")
@@ -8,16 +7,15 @@ class SistemaView:
         print("0 - Voltar")
         return input("\nDigite a opção desejada: ")
 
-
     def cadastrar_edicao_tela(self, edicoes: list):
         print("\n=== CADASTRAR EDIÇÃO ===\n")
         print("Digite o ano da edição")
         print("Exemplo: 2020")
-        print(f"""Edicoes cadastradas: {edicoes}""")
+        print(f"Edicoes cadastradas: {edicoes}")
         print("\n0 - Voltar")
         ano = input("Ano: ")
         if ano == "0":
-            return  "0"
+            return "0"
 
         if 1900 <= int(ano) > 2030:
             return None
@@ -25,6 +23,9 @@ class SistemaView:
 
     def escolher_edicao_tela(self, edicoes):
         print("\n=== Edições Cadastradas ===\n")
+        if not edicoes:
+            print("Nenhuma edição cadastrada.")
+            return None
         for edicao in edicoes:
             print(f"Oscar - {edicao.ano}")
         print("\n0 - Voltar")
@@ -43,6 +44,3 @@ class SistemaView:
             return None
 
         return opcao
-
-
-

@@ -8,12 +8,15 @@ from views.votacao_view import VotacaoView
 
 class VotacaoController:
 
-    def __init__(self, edicao: Edicao, membro_controller: MembroController,
+    def __init__(self, membro_controller: MembroController,
                  categoria_controller: CategoriaController):
-        self.__edicao = edicao
+        self.__edicao = None
         self.__view = VotacaoView()
         self.__membro_controller = membro_controller
         self.__categoria_controller = categoria_controller
+
+    def set_edicao(self, edicao: Edicao):
+        self.__edicao = edicao
 
     @property
     def votos(self):

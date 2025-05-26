@@ -4,9 +4,9 @@ from views.membro_view import MembroView
 
 class MembroController:
 
-    def __init__(self, membros: list[Membro]):
+    def __init__(self):
         self.__view = MembroView()
-        self.__membros = membros
+        self.__membros = []
 
     @property
     def membros(self):

@@ -8,9 +8,12 @@ from views.categoria_view import CategoriaView
 
 
 class CategoriaController:
-    def __init__(self, edicao: Edicao):
-        self.__edicao = edicao
+    def __init__(self):
+        self.__edicao = None
         self.__view = CategoriaView()
+
+    def set_edicao(self, edicao: Edicao):
+        self.__edicao = edicao
 
     @property
     def categorias(self):
@@ -97,6 +100,18 @@ class CategoriaController:
             categorias.append(categoria)
 
         return categorias
+
+    def get_votos_por_categoria(self, categoria: Categoria):
+        votos = {}
+        for indicado in categoria.indicados:
+            votos[indicado.indicado.nome] = indicado.votos
+        return votos
+
+    def get_votos(self):
+        votos = {}
+        for categoria in self.__edicao.categorias:
+            votos[categoria.nome] = self.get_votos_por_categoria(categoria)
+        return votos
 
 
 

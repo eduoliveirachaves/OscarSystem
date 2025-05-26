@@ -27,11 +27,9 @@ class FilmeView:
 
         print("\n--- Lista de Filmes ---")
         for filme in filmes:
-            categorias_str = ', '.join([cat.nome for cat in filme.categorias])
             print(f"Título: {filme.nome}")
             print(f"Ano: {filme.ano_lancamento}")
             print(f"Diretor: {filme.diretor.nome}")
-            print(f"Categorias: {categorias_str}")
             print("-" * 30)
 
     def cadastrar_filme(self, diretores: List[Diretor], categorias: List[Categoria]):

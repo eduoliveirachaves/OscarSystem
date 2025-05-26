@@ -1,7 +1,4 @@
 class DataLoader:
-    def __init__(self):
-        pass
-
     @staticmethod
     def carregar_dados(ano):
         if ano == 2024:
